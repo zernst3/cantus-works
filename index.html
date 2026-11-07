@@ -113,6 +113,9 @@
   }
   .offers h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--accent); }
   .offers p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
+  .contact { margin: 0; font-size: 15px; color: var(--ink-soft); }
+  .contact a { color: var(--accent); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .contact a:hover { color: var(--vivid); }
   footer {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
     padding-top: 16px; border-top: 1px solid var(--line-strong);
@@ -132,6 +135,8 @@
     .offers h2 { font-size: 14px; margin-bottom: 2px; }
     .offers p { font-size: 13.5px; line-height: 1.45; }
     footer { padding-top: 12px; font-size: 12.5px; }
+    .contact { font-size: 14px; }
+    .page { gap: 16px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .band, .band-base, .band-flow, .eyebrow::before { animation: none; }
@@ -171,6 +176,7 @@
       <li><h2>Fix</h2><p>Remediation of what the inspection found, held to the same rules.</p></li>
       <li><h2>Govern</h2><p>A monthly re-inspection and an architect on call, so the code doesn't drift back.</p></li>
     </ul>
+    <p class="contact">Questions or early inquiries: <a href="mailto:zachary.ernst@cantusworks.com">zachary.ernst@cantusworks.com</a></p>
   </main>
 
   <footer>
