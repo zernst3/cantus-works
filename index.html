@@ -79,6 +79,7 @@
     padding: clamp(20px, 4vh, 40px) clamp(16px, 4vw, 32px);
     gap: clamp(28px, 5vh, 48px);
   }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .wordmark {
     display: inline-flex; align-items: center; gap: 10px;
     font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-decoration: none;
@@ -96,7 +97,7 @@
   }
   @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
   h1 {
-    margin: 0; max-width: 18ch;
+    margin: 0; max-width: 20ch;
     font-weight: 600; font-size: clamp(32px, 6vw, 56px); line-height: 1.07; letter-spacing: -0.032em;
     text-wrap: balance;
   }
@@ -159,11 +160,11 @@
 <div class="page">
   <header>
     <a class="wordmark" href="./"><img src="logo-mark.svg" width="28" height="28" alt="">CANTUS WORKS</a>
+    <p class="eyebrow">Coming soon</p>
   </header>
 
   <main>
-    <p class="eyebrow">Coming soon</p>
-    <h1>Security and architecture problems, <span class="hl">found, fixed and prevented.</span></h1>
+    <h1>Codebase security and architecture problems, <span class="hl">found, fixed and prevented.</span></h1>
     <p class="lede">Every inspection runs on <strong>Camerata</strong>, my own engine. It reads every file of your codebase against written rules, each tied to a published source, with deterministic checks and an AI pass. Then I review what it finds and sign the report.</p>
     <ul class="offers">
       <li><h2>Find</h2><p>A full inspection of your codebase, with a prioritized plan for what to fix first.</p></li>
