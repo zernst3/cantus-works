@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What a Cantus Works inspection checks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F7F7F7">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="The areas every Cantus Works inspection covers, and three of the rules exactly as the engine reads them.">
+<meta property="og:title" content="The areas every Cantus Works inspection covers, and three of the rules exactly as the engine reads them.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="styles.css?v=20261118b">
+</head>
+<body>
+
+<header class="site" id="hdr">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="index.html"><img src="logo-mark.svg" width="28" height="28" alt="">CANTUS WORKS</a>
+    <div class="nav-right">
+      <nav class="navlinks" aria-label="Sections">
+        <a href="index.html#services">Services</a>
+        <a href="blog.html" aria-current="page">Blog</a>
+      </nav>
+      <a class="btn btn-solid btn-sm" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<article class="post-article">
+  <div class="wrap article-wrap">
+    <p class="eyebrow"><a href="blog.html">Blog</a></p>
+    <h1>What a Cantus Works inspection checks</h1>
+    <p class="lede">Every inspection reads your whole repository against the rules that apply to your stack, drawn from a library of 437. 410 of them cite the published standard they come from: the platform's own documentation, its security advisor or an established reference such as OWASP.</p>
+    <!-- LAUNCH CONDITION: "Firebase (including Flutter apps)" only once WORK_ORDER_FIREBASE_RULES.md has shipped. Counts as of 2026-10-23; generate at build time. -->
+    <p>Deepest today on Next.js and Supabase. Rules also cover Firebase (including Flutter apps), Python, C#, Go, Java, Ruby and Rust. The quote step tells you how well your stack is covered before you commit. The sample report is a real run on a small demo app. Camerata has not yet inspected a large real-world codebase.</p>
+    <h2>Security</h2>
+    <ul class="check-list">
+      <li><b>Keys and secrets</b> · credentials committed to the repository, written into code, printed in build logs or exposed to the browser.</li>
+      <li><b>Data access</b> · who can read and change which records, checked on the server, not just hidden in the interface.</li>
+      <li><b>Sign-in and sessions</b> · sessions trusted without being verified, tokens that live too long, weak password and sign-in settings.</li>
+      <li><b>Databases and migrations</b> · changes that can lose data, writes that can half-finish, money stored as approximate numbers, functions with more power than they need.</li>
+      <li><b>APIs and server code</b> · input that isn't validated, errors that leak internal details, failures swallowed silently, requests that can't be safely retried.</li>
+      <li><b>Payments</b> · webhooks that aren't verified or can be replayed, order status out of sync with the payment provider, refunds anyone can trigger, card data stored where it shouldn't be.</li>
+      <li><b>Front-end code</b> · data sent to the browser that should stay on the server, misused React hooks, lists that re-render incorrectly.</li>
+      <li><b>Build and deployment</b> · secrets printed in CI, pipelines with more permission than they need, production changes without a review gate.</li>
+      <li><b>File uploads and storage</b> · private files in public locations, file names taken straight from the user.</li>
+    </ul>
+    <h2>Consistency and quality</h2>
+    <!-- LAUNCH CONDITION: "whether your tests actually test anything" only once the test-assertion rule (TESTING-MEANINGFUL-ASSERTION-1) ships. -->
+    <p>Beyond security, I check the caliber of your code: whether it does the same thing in one consistent way, whether it follows sound architecture, whether the same logic is written more than once and whether your tests actually test anything. The report also lists the good practices your code already follows consistently, so you know what to keep.</p>
+    <h2 id="rules">Three of the rules, exactly as Camerata reads them</h2>
+    <p class="rule-links"><a class="btn btn-ghost" href="#rule-1">No hardcoded credentials</a><a class="btn btn-ghost" href="#rule-2">Retries never double-charge</a><a class="btn btn-ghost" href="#rule-3">One logger, used everywhere</a></p>
+    <p>Every rule is public. <a href="https://github.com/zernst3/camerata-orchestrator">Read them on GitHub.</a></p>
+    <div class="article-cta"><a class="btn btn-solid btn-lg" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a></div>
+  </div>
+</article>
+<div class="ov" id="rule-1" role="dialog" aria-label="No hardcoded credentials"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A mechanical check</p><h3>No hardcoded credentials</h3><p class="k">The question</p><p>Where do credentials (API keys, tokens, passwords) live?</p><p class="k">Sources</p><ul><li>CWE-798: Use of Hard-coded Credentials</li><li>OWASP Secrets Management Cheat Sheet</li></ul><p class="k">What it requires</p><p>Credential values never appear in committed source or config; they come from environment variables or a secrets manager.</p><p class="k">Rejected alternative, and why</p><p><b>Allow hardcoded credentials in internal-only tools.</b> Rejected: who can read a repository changes over time, and a credential hardcoded "for now" outlives the assumption.</p><p class="k">The fix it recommends</p><p>Remove the value, load it from the environment or a secrets manager and rotate it, since a committed secret must be treated as disclosed.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;SEC-NO-HARDCODED-SECRETS-1&quot;
+version = 2
+title = &quot;Credential literals (API keys, tokens, passwords) are never hardcoded in source; they live in environment variables or a secrets manager&quot;
+domain = &quot;universal&quot;
+layer = &quot;universal&quot;
+enforcement = &quot;mechanical&quot;
+kind = &quot;defect&quot;
+inspectable = true
+cwe = [&quot;CWE-798&quot;]
+default = true
+verification = &quot;grounded&quot;
+
+[[sources]]
+url = &quot;docs/ENFORCEMENT.md&quot;
+title = &quot;docs/ENFORCEMENT.md — RULE_REGISTRY §SEC-NO-HARDCODED-SECRETS-1 (enforced gate rule)&quot;
+
+[[sources]]
+url = &quot;https://cwe.mitre.org/data/definitions/798.html&quot;
+title = &quot;CWE-798: Use of Hard-coded Credentials&quot;
+
+[[sources]]
+url = &quot;https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html&quot;
+title = &quot;OWASP Secrets Management Cheat Sheet&quot;
+
+[decision]
+question = &quot;Where do provider-agnostic credential literals (a key/secret/token/password assigned to a named variable) live?&quot;
+default = &quot;env-or-secrets-manager&quot;
+why = &quot;&quot;&quot;
+`SEC-NO-VENDOR-TOKEN-1` catches known vendor-specific token SHAPES (AWS AKIA, GitHub gh*_, Stripe
+sk_live_, …). This rule catches the provider-agnostic case those fixed-prefix patterns miss: a
+long opaque literal assigned to an identifier whose name itself carries key/secret/token/
+password/credential vocabulary (e.g. a Finnhub or other third-party API key with no distinctive
+prefix of its own). The gate matches on the NAME-then-VALUE pattern rather than a vendor prefix,
+so it generalizes to any provider without a dedicated shape rule. Once matched, the same remedy
+applies regardless of vendor: the literal does not belong in source, and having been committed,
+it must be treated as already disclosed.
+&quot;&quot;&quot;
+
+[[option]]
+id = &quot;env-or-secrets-manager&quot;
+label = &quot;Credential literals live in env vars or a secrets manager, never source&quot;
+directive = &quot;A quoted literal of 24+ contiguous alphanumeric characters assigned near an identifier containing key/secret/token/password/credential vocabulary is never written into a source or config file committed to the repository. Tests that need a credential value use an environment variable, a secrets manager fetched at test startup or a clearly-fake placeholder that cannot be mistaken for the shape of a real key. The gate enforces this with a heuristic match (identifier vocabulary + a nearby long opaque literal) — it is not an entropy/AST analysis, so it complements rather than replaces a dedicated secret-detection tool.&quot;
+remediation = &quot;&quot;&quot;
+Remove the hardcoded credential literal from the source or config file, and load it from an environment variable or secrets manager instead. Rotate the exposed value, since it was committed to version control and must be treated as disclosed. Verify by searching the codebase for the literal value and confirming it no longer appears, while the integration still authenticates using the externally-loaded value.
+&quot;&quot;&quot;
+effort = &quot;low&quot;
+finding_headline = &quot;Your `&lt;path&gt;` file has a credential value hardcoded directly in the source.&quot;
+finding_detail = &quot;&quot;&quot;
+A secret written directly into source code ships to everyone who can read this repository — including its full git history — rather than staying somewhere access can be revoked without a code change. The value in `&lt;path&gt;` is &lt;gitignore-status&gt; and is &lt;history-status&gt;. Move it to an environment variable or secrets manager, and rotate the exposed credential.
+&quot;&quot;&quot;
+why = &quot;A hardcoded credential is disclosed the moment the commit is pushed, whether or not the repository is public today — a repository&#x27;s visibility can change, forks persist independently and CI logs/artifacts routinely echo file contents. Name-vocabulary + opaque-literal matching catches providers with no fixed token shape of their own, closing the gap `SEC-NO-VENDOR-TOKEN-1`&#x27;s prefix-anchored patterns leave open.&quot;
+
+[[option]]
+id = &quot;allow-hardcoded-for-internal-tools&quot;
+violates = true
+label = &quot;Allow hardcoded credentials in internal-only tooling&quot;
+directive = &quot;credential literals may be hardcoded in scripts or tools that are never deployed externally, on the assumption that only trusted engineers can read the repository&quot;
+why = &quot;Rejected: repository access scope changes over time (new hires, contractors, an accidental visibility flip, a fork), and a credential hardcoded &#x27;for now&#x27; outlives the assumption that justified it. The environment-variable/secrets-manager pattern costs one extra line at call time and removes the assumption entirely.&quot;
+</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator">View on GitHub</a></p></div></div>
+<div class="ov" id="rule-2" role="dialog" aria-label="Retries never double-charge"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A rule with rejected alternatives</p><h3>Retries never double-charge</h3><p class="k">The question</p><p>Do writes that charge a card, send an email or start a job require an idempotency key?</p><p class="k">Sources</p><ul><li>IETF draft: the Idempotency-Key HTTP header</li><li>Stripe: Idempotent Requests</li></ul><p class="k">What it requires</p><p>Every write with an external side effect accepts an idempotency key; a retry with the same key returns the stored result instead of running the operation again.</p><p class="k">Rejected alternative, and why</p><p><b>No idempotency contract, or no server-side deduplication at all.</b> Rejected: networks time out, the client can't tell whether the first request landed and without a key every retry risks a double charge or a duplicate email.</p><p class="k">The fix it recommends</p><p>Require the key on the endpoint, store the response by key and verify by sending the same request twice.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-IDEMPOTENCY-KEYS-1&quot;
+version = 2
+title = &quot;Non-GET writes that trigger external side effects require an idempotency key&quot;
+domain = &quot;api-layer&quot;
+layer = &quot;universal&quot;
+enforcement = &quot;structured&quot;
+kind = &quot;default_with_exceptions&quot;
+inspectable = true
+default = true
+verification = &quot;grounded&quot;
+
+[[sources]]
+url = &quot;https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/&quot;
+title = &quot;IETF — The Idempotency-Key HTTP Header Field (draft-ietf-httpapi-idempotency-key-header)&quot;
+
+[[sources]]
+url = &quot;https://docs.stripe.com/api/idempotent_requests&quot;
+title = &quot;Stripe — Idempotent Requests&quot;
+
+[decision]
+question = &quot;What position does the project take on: Non-GET writes that trigger external side effects require an idempotency key?&quot;
+default = &quot;non-get-writes-that-trigger-external-side-effects-require-an-idempotency-key&quot;
+why = &quot;Network retries are inevitable. Without idempotency keys, a client cannot safely retry after a timeout because the original may have succeeded silently. With keys, the client retries freely until it gets a definitive response, and the server never double-executes. Allowing retries without keys means the client risks double-charging or sending duplicates on every timeout, because the network cannot tell the client whether the original request reached the server. Deduplicating via natural keys works only when natural keys exist, are stable and uniquely identify the intended effect, and many real operations have no such key (a payment intent, an outbound email, an external job enqueue). Making the client responsible for not retrying pushes correctness onto every consumer; one careless caller produces duplicates and the server has no way to defend against it.&quot;
+
+[[option]]
+id = &quot;non-get-writes-that-trigger-external-side-effects-require-an-idempotency-key&quot;
+label = &quot;Non-GET writes that trigger external side effects require an idempotency key&quot;
+directive = &quot;POST, PUT, PATCH and DELETE endpoints that produce external side effects (charge a card, send an email, enqueue a downstream job, write to a message queue) require an Idempotency-Key header on each request. The server stores the response keyed by that key; a retry with the same key returns the stored response instead of running the operation again. Reads and writes that are naturally idempotent at the storage layer may omit this. The key-retention window is bounded (commonly 24 hours) and documented per endpoint. A violation of THIS rule is a side-effecting write ENDPOINT that has no idempotency-key mechanism in use at all — not the mere presence of an idempotency-key helper/utility function in the codebase, and not a helper that is defined but not (yet) called from any endpoint. An unused helper is a dead-code/hygiene concern for a DIFFERENT rule, never evidence of an idempotency defect under this one; do not report it here.&quot;
+remediation = &quot;&quot;&quot;
+Require an Idempotency-Key header on the endpoint and store the response keyed by that value so a retried request with the same key returns the stored response instead of re-running the side effect. Apply this to every POST/PUT/PATCH/DELETE endpoint that charges a card, sends an email, enqueues a job or otherwise triggers an external effect. Verify by sending the same request twice with the same Idempotency-Key and confirming the side effect (charge, email, job) only happens once.
+&quot;&quot;&quot;
+why = &quot;Network retries are inevitable.&quot;
+
+[[option]]
+id = &quot;the-api-accepts-retries-without-any-idempotency&quot;
+violates = true
+label = &quot;No idempotency contract&quot;
+directive = &quot;the API accepts retries without any idempotency-key contract; the client is expected to detect prior success out of band before retrying&quot;
+why = &quot;No idempotency contract means the client risks double-charging or sending duplicates on every timeout, because the network cannot tell the client whether the original request reached the server.&quot;
+
+[[option]]
+id = &quot;the-api-deduplicates-requests-by-inspecting-natu&quot;
+label = &quot;Deduplicate by natural keys&quot;
+directive = &quot;the API deduplicates requests by inspecting natural keys in the payload (such as an email address or invoice number) rather than by requiring an explicit Idempotency-Key header&quot;
+why = &quot;Natural-key deduplication works only when natural keys exist, are stable and uniquely identify the intended effect; many real operations have no such key (a payment intent, an outbound email, an external job enqueue).&quot;
+
+[[option]]
+id = &quot;the-api-does-no-server-side-deduplication-at-all&quot;
+violates = true
+label = &quot;No deduplication&quot;
+directive = &quot;the API does no server-side deduplication at all; each consumer is responsible for not retrying after a timeout, and the server treats every request as new&quot;
+why = &quot;Pushing correctness onto every consumer means one careless caller produces duplicates and the server has no way to defend against it.&quot;
+</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator">View on GitHub</a></p></div></div>
+<div class="ov" id="rule-3" role="dialog" aria-label="One logger, used everywhere"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A consistency rule</p><h3>One logger, used everywhere</h3><p class="k">The question</p><p>Once a structured logger is in use, does every log call go through it?</p><p class="k">Sources</p><ul><li>OWASP Logging Cheat Sheet</li><li>OWASP Logging Vocabulary Cheat Sheet</li></ul><p class="k">What it requires</p><p>In a repository that has already adopted a structured logger, every operational log line goes through it. It only fires on inconsistency; it never says a repository must adopt one.</p><p class="k">Rejected alternative, and why</p><p><b>Allow mixed logging styles.</b> Rejected: a log search built around the structured format silently misses every line that bypasses it.</p><p class="k">The fix it recommends</p><p>Swap each bare print or console call for the same message through the existing logger, at the same level.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-OBSERVABILITY-LOG-CONSISTENCY-1&quot;
+version = 2
+title = &quot;Once a repo has adopted a structured logger, every log call site goes through it; bare print/console-style calls do not sit alongside it&quot;
+domain = &quot;universal&quot;
+layer = &quot;universal&quot;
+enforcement = &quot;architectural&quot;
+kind = &quot;defect&quot;
+inspectable = true
+# Severity ceiling: findings from this rule are capped at Low, whatever severity the model proposes.
+max_severity = &quot;low&quot;
+default = true
+verification = &quot;grounded&quot;
+qualifies = &quot;This is an INCONSISTENCY check, not a &#x27;you must adopt structured logging&#x27; stance — it only fires once a repo has ALREADY adopted a structured logger (slog/zap/winston/pino/slf4j/serilog/tracing, or an equivalent project-specific wrapper) and some OTHER call site in the same repo still uses a bare print/console-style call alongside it. For Go and Java specifically, the &#x27;always use structured logging&#x27; stance itself is already covered by GO-LOGGING-STRUCTURED-1 and JAVA-LOGGING-STRUCTURED-1 (both full-severity, per-language prose rules) — this rule does not re-litigate that stance for those two languages; it exists for (a) every OTHER stack (Python, JS/TS, Rust, C#, Ruby) where no per-language stance rule already covers the question, and (b) the cross-stack/multi-language case where the inconsistency is between files or layers rather than within a single language&#x27;s own convention. Camerata has no deterministic check for this rule; the model-assisted review finds it, and its findings are capped at severity Low. A bare print/console-style call that is the CLI tool&#x27;s actual stdout product, or that appears in a test or script file where print output IS the point, is out of scope and not flagged.&quot;
+
+[[sources]]
+url = &quot;https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html&quot;
+title = &quot;OWASP Logging Cheat Sheet — &#x27;Use a standard logging library/format&#x27;: consistent use of one logging approach across an application, rather than ad hoc print statements alongside it&quot;
+
+[[sources]]
+url = &quot;https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html&quot;
+title = &quot;OWASP Logging Vocabulary Cheat Sheet — a shared log event vocabulary/format presupposes every event is emitted through the same logging mechanism&quot;
+
+[decision]
+question = &quot;Once a structured logger is already in use somewhere in the repo, does every log-shaped call site go through it, or do bare print/console.log/puts/fmt.Println-style calls still sit alongside it?&quot;
+default = &quot;one-logger-for-the-whole-repo&quot;
+why = &quot;&quot;&quot;
+A structured logger&#x27;s entire value — machine-parseable fields, consistent levels, a single place to
+configure output format/destination/filtering — is undermined the moment some call sites bypass it: a
+log aggregator built to parse the structured logger&#x27;s JSON output silently drops (or mis-parses) a bare
+`print`/`console.log` line sitting in the same log stream, and a developer searching logs by field
+learns nothing from the call sites that never emitted one. This is specifically an INTERNAL CONSISTENCY
+defect, not a stance about whether structured logging is good (that question belongs to the per-language
+rules, e.g. GO-LOGGING-STRUCTURED-1): a repo that has already paid the cost of adopting slog/zap/pino/
+slf4j and then leaves some fraction of its own call sites on bare print statements gets none of the
+consistency benefit and all of the adoption cost. Scoped deliberately to REPOS THAT HAVE ALREADY
+ADOPTED a structured logger somewhere — a repo with no structured logger anywhere is a different
+question (the per-language stance rules), not this one.
+&quot;&quot;&quot;
+
+[[option]]
+id = &quot;one-logger-for-the-whole-repo&quot;
+label = &quot;Every log call site in the repo goes through the same adopted structured logger; no bare print/console-style calls alongside it&quot;
+directive = &quot;&quot;&quot;
+In a repository that has already adopted a structured logger (slog/zap/winston/pino/slf4j/serilog/tracing,
+or an equivalent project-specific wrapper) at one or more call sites, every log-shaped call site goes
+through that logger; a bare print/console.log/puts/fmt.Println-style call emitting an operational event, an
+error or a status update does not sit alongside it. Every such message therefore lands in the same
+structured format and the same aggregated stream as the rest of the repo&#x27;s logs, rather than a fraction of
+them bypassing the logger a log aggregator was built to parse. A call site that goes through the adopted
+logger is conforming regardless of its level or format.
+&quot;&quot;&quot;
+remediation = &quot;&quot;&quot;
+Replace the ad hoc print/console-style call with a call through the repo&#x27;s existing structured logger,
+at the same log level and with the same message content, rather than introducing a second logging
+mechanism. If no equivalent level/call exists yet in the adopted logger&#x27;s usage elsewhere in the repo,
+add one rather than falling back to a bare print. Verify by confirming the replaced call site&#x27;s output
+now appears in the same structured format (and, where applicable, the same aggregated log stream) as
+every other log line in the repo.
+&quot;&quot;&quot;
+effort = &quot;low&quot;
+why = &quot;The fix is a like-for-like swap (the same message, the same level, through the already-adopted logger instead of a bare print call), so it carries none of the cost of adopting structured logging in the first place — only the cost of finishing an adoption the repo already started.&quot;
+
+[[option]]
+id = &quot;allow-mixed-logging-styles&quot;
+violates = true
+label = &quot;Allow bare print/console-style calls to coexist with the repo&#x27;s adopted structured logger&quot;
+directive = &quot;Individual files or call sites may use a bare print/console.log/puts/fmt.Println-style call even in a repo that has otherwise adopted a structured logger elsewhere.&quot;
+why = &quot;Rejected: a log aggregator or a field-based search built around the structured logger&#x27;s output format gets a silently incomplete picture the moment some call sites bypass it — the repo pays the full cost of adopting structured logging and still does not get a complete, uniformly-parseable log stream out of it.&quot;
+</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator">View on GitHub</a></p></div></div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <img class="foot-mark" src="logo-mark.svg" width="36" height="36" alt="">
+      <p class="foot-name">Cantus Works</p>
+      <p>Zachary Ernst</p>
+      <p><a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
+      <p><a href="https://www.linkedin.com/company/cantusworks">LinkedIn</a> &middot; <a href="https://github.com/zernst3">GitHub</a></p>
+      <p>Also available: new builds and stack migrations on the same rules. <a href="mailto:hello@cantusworks.com?subject=New%20build%20or%20migration">Ask for a quote.</a></p>
+    </div>
+    <nav aria-label="Footer sections">
+      <ul>
+        <li><a href="index.html#how">How it works</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#receive">What you receive</a></li>
+        <li><a href="index.html#who">Who reads your code</a></li>
+        <li><a href="index.html#questions">Questions</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </nav>
+    <div>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li>&copy; 2026</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-credit">
+    <span class="foot-credit-label">Website by</span>
+    <a class="foot-credit-link" href="https://agenciacontesta.com/" target="_blank" rel="noopener">
+      <span>Contesta</span>
+      <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>

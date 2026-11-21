@@ -2,187 +2,496 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Cantus Works · Codebase inspection and technical due diligence</title>
+<title>Cantus Works</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F7F7F7">
-<meta name="description" content="Cantus Works finds, fixes and prevents security and architecture problems in codebases, using its own engine, Camerata, and a named engineer who signs every report. Coming soon.">
-<meta property="og:title" content="Cantus Works">
-<meta property="og:description" content="Security and architecture problems in your codebase, found, fixed and prevented. Coming soon.">
-<meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<style>
-  /* Coming-soon page. Tokens and the hero band are taken from the v2 site (v2/styles.css). */
-  :root {
-    color-scheme: light;
-    --bg: #F7F7F7;
-    --glass: rgba(255, 255, 255, 0.55);
-    --ink: #0F1826;
-    --ink-soft: #47536A;
-    --ink-faint: #6B7690;
-    --accent: #2B5580;
-    --vivid: #0C22F2;
-    --line: rgba(15, 24, 38, 0.08);
-    --line-strong: rgba(15, 24, 38, 0.14);
-    --r-md: 12px;
-    --shadow-md:
-      0 1px 2px rgba(15, 24, 38, 0.05),
-      0 8px 18px -6px rgba(27, 58, 86, 0.10),
-      0 22px 40px -16px rgba(27, 58, 86, 0.14);
-    --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
-    --ease: cubic-bezier(.2, .7, .2, 1);
+<meta name="description" content="Security findings and technical due diligence in one signed report you can show anyone who needs to trust your product.">
+<meta property="og:title" content="Cantus Works">
+<meta property="og:description" content="Security findings and technical due diligence in one signed report you can show anyone who needs to trust your product.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="styles.css?v=20261118b">
+<script>
+  /* hide the hero until GSAP plays its intro; a safety net removes it if GSAP never loads */
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('hero-anim');
+    setTimeout(function () { if (!window.gsap) document.documentElement.classList.remove('hero-anim'); }, 2500);
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); overflow-x: clip; }
-  body {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex; flex-direction: column;
-    color: var(--ink);
-    font-family: var(--font);
-    font-size: 16px; line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-size-adjust: 100%;
-  }
-  a { color: inherit; }
-  ::selection { background: rgba(12, 34, 242, 0.14); }
-  :focus-visible { outline: 2px solid var(--vivid); outline-offset: 3px; border-radius: 3px; }
-
-  /* background band */
-  .bg { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-  .band {
-    position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;
-    filter: blur(38px); opacity: .9;
-    animation: sway 15s ease-in-out infinite alternate;
-  }
-  @keyframes sway {
-    from { transform: translate3d(-1.4%, -1.8%, 0) rotate(-0.9deg); }
-    to { transform: translate3d(1.6%, 1.6%, 0) rotate(0.9deg); }
-  }
-  .band-base { animation: breathe 12s ease-in-out infinite alternate; }
-  .band-flow { animation: breathe 12s ease-in-out infinite alternate, flow 17s linear infinite; }
-  @keyframes breathe { from { stroke-width: 98; } to { stroke-width: 138; } }
-  @keyframes flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -2480; } }
-  .stroke {
-    position: absolute; left: -8vw; right: -8vw; bottom: 14%; height: 1.5px;
-    background: linear-gradient(90deg, transparent 0%, rgba(43, 85, 128, 0.12) 20%, rgba(12, 34, 242, 0.55) 50%, rgba(43, 85, 128, 0.12) 80%, transparent 100%);
-    transform: rotate(-1.3deg);
-  }
-
-  /* layout */
-  .page {
-    position: relative; z-index: 1; flex: 1;
-    display: flex; flex-direction: column; justify-content: space-between;
-    width: 100%; max-width: 980px; margin: 0 auto;
-    padding: clamp(20px, 4vh, 40px) clamp(16px, 4vw, 32px);
-    gap: clamp(28px, 5vh, 48px);
-  }
-  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .wordmark {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-decoration: none;
-  }
-  .wordmark img { width: 28px; height: 28px; display: block; }
-  main { display: flex; flex-direction: column; gap: clamp(20px, 3.5vh, 32px); }
-  .eyebrow {
-    display: flex; align-items: center; gap: 9px; margin: 0;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
-    color: var(--accent);
-  }
-  .eyebrow::before {
-    content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--vivid);
-    animation: twinkle 3.4s ease-in-out infinite;
-  }
-  @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
-  h1 {
-    margin: 0; max-width: 20ch;
-    font-weight: 600; font-size: clamp(32px, 6vw, 56px); line-height: 1.07; letter-spacing: -0.032em;
-    text-wrap: balance;
-  }
-  h1 .hl { color: var(--vivid); }
-  .lede { margin: 0; max-width: 60ch; font-size: clamp(16px, 1.4vw, 18px); line-height: 1.58; color: var(--ink-soft); }
-  .lede strong { color: var(--ink); font-weight: 600; }
-  .offers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
-  .offers li {
-    padding: 18px 20px; border-radius: var(--r-md);
-    background: var(--glass); border: 1px solid var(--line);
-    backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%);
-    box-shadow: var(--shadow-md);
-  }
-  .offers h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--accent); }
-  .offers p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
-  .contact { margin: 0; font-size: 15px; color: var(--ink-soft); }
-  .contact a { color: var(--accent); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; overflow-wrap: anywhere; }
-  .contact a:hover { color: var(--vivid); }
-  footer {
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
-    padding-top: 16px; border-top: 1px solid var(--line-strong);
-    font-size: 13.5px; color: var(--ink-faint);
-  }
-  footer a { color: var(--ink-soft); font-weight: 500; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  footer a:hover { color: var(--vivid); }
-
-  @media (max-width: 760px) {
-    .band { filter: blur(26px); opacity: .7; }
-    .page { gap: 22px; padding-top: 18px; padding-bottom: 16px; }
-    main { gap: 14px; }
-    h1 { font-size: 28px; }
-    .lede { font-size: 15px; line-height: 1.5; }
-    .offers { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-    .offers li { padding: 10px 14px; }
-    .offers h2 { font-size: 14px; margin-bottom: 2px; }
-    .offers p { font-size: 13.5px; line-height: 1.45; }
-    footer { padding-top: 12px; font-size: 12.5px; }
-    .contact { font-size: 14px; }
-    .page { gap: 16px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .band, .band-base, .band-flow, .eyebrow::before { animation: none; }
-  }
-</style>
+</script>
 </head>
 <body>
-<div class="bg" aria-hidden="true">
-  <svg class="band" viewBox="0 0 1440 900" preserveAspectRatio="none">
-    <defs>
-      <linearGradient id="cwBand" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="1420" y2="600">
-        <stop offset="0" stop-color="#0C22F2" stop-opacity="0"></stop>
-        <stop offset="0.18" stop-color="#1431EE" stop-opacity="0.26"></stop>
-        <stop offset="0.42" stop-color="#1FA6E0" stop-opacity="0.32"></stop>
-        <stop offset="0.62" stop-color="#1431EE" stop-opacity="0.24"></stop>
-        <stop offset="0.84" stop-color="#2FB4E6" stop-opacity="0.18"></stop>
-        <stop offset="1" stop-color="#0C22F2" stop-opacity="0"></stop>
-      </linearGradient>
-    </defs>
-    <path class="band-base" d="M 88 -50 C 116 140 150 210 315 258 C 480 306 640 378 795 452 C 1000 550 1220 500 1560 610" fill="none" stroke="url(#cwBand)" stroke-width="118" stroke-linecap="round"></path>
-    <path class="band-flow" d="M 88 -50 C 116 140 150 210 315 258 C 480 306 640 378 795 452 C 1000 550 1220 500 1560 610" fill="none" stroke="#3FB6E8" stroke-opacity="0.24" stroke-width="82" stroke-linecap="round" stroke-dasharray="340 900"></path>
-  </svg>
-  <div class="stroke"></div>
-</div>
+<!--
+  Cantus Works website v2. Words come from "Website v2 - copy deck.md".
+  Notes for the editor:
+  - Hero excerpt is a demo row. LAUNCH CONDITION: replace it with the real sample row.
+  - "Who reads your code" first paragraph. LAUNCH CONDITION: keep the "By day" sentence only after the outside-activity approval.
+  - Later: an intro video can replace the photo.
+  - The sample report is ungated: the form and modal are gone and every "Download the sample report" button links straight to sample-report.pdf.
+  - privacy.html and terms.html are linked from the footer and do not exist yet.
+-->
 
-<div class="page">
-  <header>
-    <a class="wordmark" href="./"><img src="logo-mark.svg" width="28" height="28" alt="">CANTUS WORKS</a>
-    <p class="eyebrow">Coming soon</p>
-  </header>
+<header class="site" id="hdr">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#top"><img src="logo-mark.svg" width="28" height="28" alt="">CANTUS WORKS</a>
+    <div class="nav-right">
+      <nav class="navlinks" aria-label="Sections">
+        <a href="#services">Services</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+      <a class="btn btn-solid btn-sm" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a>
+    </div>
+  </div>
+</header>
 
-  <main>
-    <h1>Codebase security and architecture problems, <span class="hl">found, fixed and prevented.</span></h1>
-    <p class="lede">Every inspection runs on <strong>Camerata</strong>, my own engine. It reads every file of your codebase against written rules, each tied to a published source, with deterministic checks and an AI pass. Then I review what it finds and sign the report.</p>
-    <ul class="offers">
-      <li><h2>Find</h2><p>A full inspection of your codebase, with a prioritized plan for what to fix first.</p></li>
-      <li><h2>Fix</h2><p>Remediation of what the inspection found, held to the same rules.</p></li>
-      <li><h2>Govern</h2><p>A monthly re-inspection and an architect on call, so the code doesn't drift back.</p></li>
+<main>
+<!-- 1. HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true">
+    <svg class="hero-band" viewBox="0 0 1440 900" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="cwBand" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="1420" y2="600">
+          <stop offset="0" stop-color="#0C22F2" stop-opacity="0"></stop>
+          <stop offset="0.18" stop-color="#1431EE" stop-opacity="0.26"></stop>
+          <stop offset="0.42" stop-color="#1FA6E0" stop-opacity="0.32"></stop>
+          <stop offset="0.62" stop-color="#1431EE" stop-opacity="0.24"></stop>
+          <stop offset="0.84" stop-color="#2FB4E6" stop-opacity="0.18"></stop>
+          <stop offset="1" stop-color="#0C22F2" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+      <path class="cw-band-base" d="M 88 -50 C 116 140 150 210 315 258 C 480 306 640 378 795 452 C 1000 550 1220 500 1560 610" fill="none" stroke="url(#cwBand)" stroke-width="118" stroke-linecap="round"></path>
+      <path class="cw-band-flow" d="M 88 -50 C 116 140 150 210 315 258 C 480 306 640 378 795 452 C 1000 550 1220 500 1560 610" fill="none" stroke="#3FB6E8" stroke-opacity="0.24" stroke-width="82" stroke-linecap="round" stroke-dasharray="340 900"></path>
+    </svg>
+    <div class="hero-stroke"></div>
+  </div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="hero-title">
+          <span class="hl hl1"><span class="w"><span>Know</span></span> <span class="w"><span>where</span></span> <span class="w"><span>your</span></span> <span class="w"><span class="scr">codebase</span></span> <span class="w"><span>stands</span></span> <span class="w"><span>today.</span></span></span>
+          <span class="hl hl2"><span class="grad">Then fix what matters and</span> <em class="accent">keep it fixed.</em></span>
+        </h1>
+        <p class="standfirst">Security findings and technical due diligence in one signed report. Show it to the customer who asks if their data is safe or the investor who asks what they're buying.</p>
+        <div class="hero-cta">
+          <a class="btn btn-solid btn-lg" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a>
+          <!-- sample-report.pdf does not exist yet: add the file next to this page before launch. -->
+          <a class="btn btn-lg" href="sample-report.pdf">Download the sample report</a>
+        </div>
+      </div>
+
+      <div class="report-wrap">
+        <!-- LAUNCH CONDITION: replace this demo excerpt with the real sample row. -->
+        <div class="report-stage">
+        <div class="report-float">
+        <div class="report-tilt">
+        <div class="report-ghost" aria-hidden="true">
+          <div class="report-bar"><i></i><i></i><i></i></div>
+          <div class="ghost-lines"><b></b><b></b><b></b><b></b></div>
+        </div>
+        <div class="report">
+          <div class="scanline" aria-hidden="true"></div>
+          <div class="report-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="finding">
+            <div class="loc">
+              <span class="sev crit">Critical</span>
+              <span>supabase/migrations/0004_backfill_billing.sql, line 15</span>
+            </div>
+            <p class="impact">Security was switched off on the payments table for a data backfill. The migration then switched it back on for the wrong table. Every signed-in user can read every customer's saved card details.</p>
+            <p class="fix"><b>Fix:</b> re-enable row security on payment_methods in a new migration and confirm with a test query as a second user.</p>
+          </div>
+          <div class="report-foot">Confidence: high &middot; reviewed by Zachary Ernst</div>
+        </div>
+        <div class="chip chip-a" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>437 checks</div>
+        <div class="chip chip-b" aria-hidden="true"><span class="dot"></span>Read-only access</div>
+        </div>
+        </div>
+        <div class="report-shadow" aria-hidden="true"></div>
+        </div>
+        <p class="report-caption">From the sample report, on a demo codebase.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. THE PROBLEM -->
+<section class="tight" id="problem">
+  <div class="wrap">
+    <p class="problem"><span class="lead">Your app works.</span> But new features take longer than they should, the same job gets done three different ways and no one can say what's quietly broken. Then a customer or an investor asks if it's secure.</p>
+  </div>
+</section>
+
+<!-- 3. HOW IT WORKS: four step cards in a 3D coverflow (how.js). Without JS or with reduced motion they sit in a plain row. -->
+<section class="bg-blue how" id="how">
+  <div class="wrap">
+    <div class="how-pin">
+    <div class="how-head">
+      <h2>How it works</h2>
+      <p class="how-count" aria-hidden="true"><span class="how-count-now">01</span> / 04</p>
+    </div>
+
+    <ol class="how-steps">
+      <li class="how-step tone-light is-active">
+        <div class="how-card">
+          <div class="how-top"><span class="how-order">1</span><p class="how-name">Quote</p></div>
+          <h3>Tell me about your codebase.</h3>
+          <p class="how-desc">Answer a few questions or give me read-only access. If you build with an AI tool, I can send a prompt that gathers the answers for you. You get a fixed price and a delivery date within two business days.</p>
+        </div>
+      </li>
+      <li class="how-step tone-vivid">
+        <div class="how-card">
+          <div class="how-top"><span class="how-order">2</span><p class="how-name">Inspection</p></div>
+          <h3>Every file is read.</h3>
+          <p class="how-desc">A signed report of every finding and a walkthrough call, in one to two weeks for most codebases.</p>
+        </div>
+      </li>
+      <li class="how-step tone-ink">
+        <div class="how-card">
+          <div class="how-top"><span class="how-order">3</span><p class="how-name">Fix</p></div>
+          <h3>I fix them in priority order.</h3>
+          <p class="how-desc">You approve every change before it goes in. Each one is written the way your code is already written.</p>
+        </div>
+      </li>
+      <li class="how-step tone-sky">
+        <div class="how-card">
+          <div class="how-top"><span class="how-order">4</span><p class="how-name">Govern</p></div>
+          <h3>Your code stays fixed.</h3>
+          <p class="how-desc">Every month, new and changed code is inspected against the same rules, plus an architect on call.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="how-dots" aria-hidden="true"><i class="is-active"></i><i></i><i></i><i></i></div>
+    </div>
+
+    <!-- mid-page CTA under the steps -->
+    <div class="cta-center"><a class="btn btn-solid btn-lg" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a></div>
+  </div>
+</section>
+
+<!-- 4. SERVICES: three instruments (services.js). Reading levels: verb + price, one line, details. -->
+<section id="services" class="svc-section">
+  <div class="wrap">
+    <p class="eyebrow">Services</p>
+    <h2 class="svc-title"><span>Find.</span> <span>Fix.</span> <span>Govern.</span></h2>
+
+    <div class="svc-grid">
+
+      <!-- FIND -->
+      <article class="svc svc-find">
+        <div class="svc-top">
+          <span class="svc-node" aria-hidden="true">01</span>
+          <span class="flagship-tag">Start here</span>
+        </div>
+        <p class="verb">Find</p>
+        <h3>Codebase Inspection</h3>
+        <p class="price"><span class="from">From</span> <span class="amt" data-to="3000">$3,000</span></p>
+
+        <div class="est">
+          <div class="est-bars" aria-hidden="true"></div>
+          <div class="est-label">
+            <span class="est-price" id="est-price">Estimated: $3,000</span>
+            <span class="est-lines" id="est-lines">50,000 lines</span>
+          </div>
+          <input type="range" id="est-range" min="0" max="1000000" step="1000" value="50000" aria-label="Codebase size in lines" aria-describedby="est-price">
+          <div class="est-presets" role="group" aria-label="Typical sizes">
+            <button type="button" data-lines="20000">20k</button>
+            <button type="button" data-lines="50000" class="is-on">50k</button>
+            <button type="button" data-lines="150000">150k</button>
+            <button type="button" data-lines="400000">400k</button>
+            <button type="button" data-lines="1000000">1M</button>
+          </div>
+          <p class="priced">Priced by size, because every file is read.</p>
+        </div>
+
+        <p class="bold-line">Know what's wrong, what's solid and what to fix first.</p>
+        <p class="body">Every file read against security and architecture rules, <mark class="svc-mark">every finding traced to its line of code, every judgment call made by the engineer who signs the report.</mark></p>
+        <p class="small">Not sure the size of your codebase? The quote step can count it for you.</p>
+        <a class="btn btn-solid btn-sm" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a>
+      </article>
+
+      <!-- FIX -->
+      <article class="svc svc-fix">
+        <div class="svc-top"><span class="svc-node" aria-hidden="true">02</span></div>
+        <p class="verb">Fix</p>
+        <h3>Remediation</h3>
+        <p class="price"><span class="amt" data-to="150">$150</span> <span class="per">/ hour</span></p>
+        <p class="unit">Ten-hour minimum</p>
+
+        <div class="hours">
+          <div class="hours-row">
+            <button type="button" class="hours-btn" data-step="-5" aria-label="Fewer hours">&minus;</button>
+            <p class="hours-out" aria-live="polite"><b id="hours-n">10</b> hours <span>=</span> <b id="hours-total">$1,500</b></p>
+            <button type="button" class="hours-btn" data-step="5" aria-label="More hours">+</button>
+          </div>
+          <div class="hours-blocks" aria-hidden="true"></div>
+        </div>
+
+        <p class="bold-line">Findings fixed in priority order.</p>
+        <p class="body">Pull requests you approve. Fixed-price packages for pre-seed teams.</p>
+        <a class="btn btn-sm" href="mailto:hello@cantusworks.com?subject=Remediation">Inquire</a>
+      </article>
+
+      <!-- GOVERN -->
+      <article class="svc svc-gov">
+        <div class="svc-top"><span class="svc-node" aria-hidden="true">03</span></div>
+        <p class="verb">Govern</p>
+        <h3>Ongoing Governance</h3>
+        <p class="price"><span class="from">From</span> <span class="amt" data-to="3000">$3,000</span> <span class="per">/ month</span></p>
+        <p class="unit">Three months, then month to month</p>
+
+        <div class="months" aria-hidden="true">
+          <div class="months-row"><i class="commit">M1</i><i class="commit">M2</i><i class="commit">M3</i><i class="flex">M4</i><i class="flex">M5</i><i class="flex">M6</i><i class="flex">&hellip;</i></div>
+          <div class="months-legend"><span>First three months</span><span>Month to month</span></div>
+        </div>
+
+        <p class="bold-line">Keep it fixed.</p>
+        <p class="body">A monthly re-inspection and an architect on call.</p>
+        <a class="btn btn-sm" href="mailto:hello@cantusworks.com?subject=Ongoing%20Governance">Inquire</a>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+<!-- 5. WHAT YOU RECEIVE: the three deliverables always on show, side by side, each object above its name (receive.js).
+     Reading levels: 1) the three deliverables, 2) promises, 3) date line and button. -->
+<section class="bg-deep" id="receive">
+  <div class="wrap">
+    <h2>What you receive</h2>
+
+    <div class="rcv-row">
+      <div class="rcv-col is-active">
+        <div class="rcv-doc rcv-pdf" aria-hidden="true">
+          <div class="doc-head"><span class="doc-type">PDF</span><span class="doc-meta">Summary</span></div>
+          <p class="doc-title">Plain-language overview</p>
+          <div class="doc-lines"><b></b><b></b><b></b><b></b><b></b></div>
+          <div class="doc-kpis"><span class="k-broken"><i></i>Broken</span><span class="k-incons"><i></i>Inconsistent</span><span class="k-well"><i></i>Done well</span></div>
+          <div class="doc-foot"><span class="doc-sign">Zachary Ernst</span><span class="doc-stamp">Dated &amp; signed</span></div>
+        </div>
+        <button type="button" class="rcv-item is-active" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
+          <span>Summary PDF with a one-page plain-language overview</span>
+          <i class="rcv-timer" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="rcv-col">
+        <div class="rcv-doc rcv-xls" aria-hidden="true">
+          <div class="doc-head"><span class="doc-type xls">XLSX</span><span class="doc-meta">Every finding</span></div>
+          <div class="xls-grid">
+            <div class="xls-row xls-h"><span>#</span><span>Finding</span><span>Kind</span></div>
+            <div class="xls-row" data-kind="broken"><span>1</span><span><b style="width:82%"></b></span><span class="pill k-broken">Broken</span></div>
+            <div class="xls-row" data-kind="incons"><span>2</span><span><b style="width:64%"></b></span><span class="pill k-incons">Inconsistent</span></div>
+            <div class="xls-row" data-kind="well"><span>3</span><span><b style="width:74%"></b></span><span class="pill k-well">Done well</span></div>
+            <div class="xls-row" data-kind="broken"><span>4</span><span><b style="width:58%"></b></span><span class="pill k-broken">Broken</span></div>
+            <div class="xls-row" data-kind="incons"><span>5</span><span><b style="width:88%"></b></span><span class="pill k-incons">Inconsistent</span></div>
+            <div class="xls-row" data-kind="well"><span>6</span><span><b style="width:52%"></b></span><span class="pill k-well">Done well</span></div>
+          </div>
+          <div class="xls-tabs"><span class="on">xlsx</span><span>csv</span><span>json</span></div>
+        </div>
+        <button type="button" class="rcv-item" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M4 10h16M4 14.5h16M10 5v14"/></svg>
+          <span>Excel workbook of every finding (plus CSV and JSON)</span>
+          <i class="rcv-timer" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="rcv-col">
+        <div class="rcv-doc rcv-call" aria-hidden="true">
+          <div class="doc-head"><span class="doc-type call">CALL</span><span class="doc-meta">Walkthrough</span></div>
+          <div class="call-who"><img src="headshot.jpg" alt=""><div><p class="call-name">Zachary Ernst</p><p class="call-role">Cantus Works</p></div></div>
+          <div class="call-wave"></div>
+          <div class="call-btns"><i></i><i class="end"></i><i></i></div>
+        </div>
+        <button type="button" class="rcv-item" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+          <span>Walkthrough call</span>
+          <i class="rcv-timer" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="rcv-more">
+      <div class="rcv-rest">
+        <ul class="rcv-promises">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg><span>The report is complete on its own. Fixing is optional and priced separately.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span><mark class="rcv-mark">I review every pattern, every critical finding and every call the engine isn't sure of.</mark></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Your report belongs to you. I never share it.</span></li>
+        </ul>
+        <p class="dated">Dated and tied to the exact version of your code that was read. Ready to share with your investors or customers.</p>
+        <!-- sample-report.pdf does not exist yet: add the file next to this page before launch. -->
+        <div class="cta-row"><a class="btn btn-solid btn-lg" href="sample-report.pdf">Download the sample report</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. WHAT I CHECK: one line and a link to the blog -->
+<section class="teaser tight" id="check">
+  <div class="wrap">
+    <p>Every file is read against the rules that apply to your stack, drawn from a library of 437. <a href="inspection-checks.html">See what I check &rarr;</a></p>
+  </div>
+</section>
+
+<!-- 8. WHO READS YOUR CODE: the key sentence lights up as you scroll, then the person and the engine side by side (who.js).
+     Reading levels: 1) the sentence, 2) the two cards. -->
+<section id="who">
+  <div class="wrap">
+    <h2>Who reads your code</h2>
+
+    <p class="who-statement">Cantus Works is one person: <span class="who-key">I make every judgment call and sign every report.</span></p>
+
+    <div class="who-grid">
+      <article class="who-card who-person">
+        <div class="who-photo"><img src="headshot.jpg" width="848" height="1060" alt="Zachary Ernst" loading="lazy"></div>
+        <div class="who-body">
+          <p class="who-tag">The person</p>
+          <h3 class="who-name">Zachary Ernst</h3>
+          <!-- LAUNCH CONDITION: keep the "By day" sentence only after the outside-activity approval. -->
+          <p>I'm Zachary Ernst. I'm also a technical lead on risk software for large financial institutions, so I take a limited number of inspections at a time.</p>
+        </div>
+      </article>
+
+      <article class="who-card who-engine">
+        <svg class="who-rings" viewBox="0 0 96 96" aria-hidden="true">
+          <path class="r1" d="M 61.9 38.2 A 17 17 0 1 0 61.9 57.8"/>
+          <path class="r2" d="M 70.1 32.5 A 27 27 0 1 0 70.1 63.5"/>
+          <path class="r3" d="M 78.3 26.8 A 37 37 0 1 0 78.3 69.2"/>
+          <rect x="48" y="44.5" width="45" height="7" rx="3.5"/>
+        </svg>
+        <div class="who-body">
+          <p class="who-tag">The engine</p>
+          <h3 class="who-name">Camerata</h3>
+          <p>The engine I built for this work is Camerata. It is source-available on <a href="https://github.com/zernst3/camerata-orchestrator">GitHub</a>. Camerata has been calibrated on test repos, including one public project, but has not yet run on a large client codebase.</p>
+          <a class="who-link" href="how-camerata-works.html">How Camerata works <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 10. QUESTIONS: list + answer panel on desktop, accordion on small screens (faq.js). Reading levels: question, short answer, detail. -->
+<section class="bg-blue" id="questions">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <div class="faq" id="faq">
+      <details>
+        <summary>Will you just tell me to rewrite?</summary>
+        <p class="answer">Rarely. If a rewrite is genuinely less costly than fixing the current code, the report says so, with the data to back it up.</p>
+      </details>
+      <details>
+        <summary>Will I get a pile of false alarms?</summary>
+        <p class="answer">That's what my review is for. The engine proposes and I decide. <mark class="faq-mark">Every finding points to its line of code, so you can check it yourself. I review every pattern, every critical finding and every call the engine isn't sure of. When the same problem repeats across your code, I review it once and the report lists every place it appears. The report says how many I threw out.</mark></p>
+      </details>
+      <details>
+        <summary>How long does it take?</summary>
+        <p class="answer">One to two weeks for most codebases. Your quote gives a date for yours. Rush delivery is available for a fee, stated in the quote.</p>
+      </details>
+      <details>
+        <summary>Can my own developer do the fixes?</summary>
+        <p class="answer">Yes. Every finding includes the location in the code, the suggested fix and an estimate. Any developer can work from it. I do the fixes only if you ask me to. If an investor commissions the inspection, the agreement can rule out fix work so the report stays independent.</p>
+      </details>
+      <details>
+        <summary>Can I show the report to an investor?</summary>
+        <p class="answer">Yes. A non-technical investor can read the PDF summary. Technical reviewers can use the workbook for the finer details.</p>
+      </details>
+      <details>
+        <summary>How is this different from the tools I already run?</summary>
+        <p class="answer">Tools like Semgrep and Dependabot match known patterns and flag known vulnerable packages. A pen test attacks your running app. An inspection reads your whole codebase against written rules, including the places it contradicts its own patterns. <mark class="faq-mark">I review every pattern, every critical finding and every call the engine isn't sure of.</mark> It works alongside those tools, not instead of them.</p>
+      </details>
+      <details>
+        <summary>Does this cover customer data and compliance?</summary>
+        <p class="answer">It covers how your code protects customer data: who can see what, where secrets live and how payments are handled. It is not a compliance certification. SOC 2, HIPAA and PCI are separate processes, and this report doesn't replace them.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 11. FINAL CALL TO ACTION + 9. trust strip: dark closing section (final.js).
+     Reading levels: 1) headline, 2) the bold facts in the line below and the button, 3) the four trust cards. -->
+<section class="contact final" id="contact">
+  <div class="final-bg" aria-hidden="true"><div class="final-dots"></div><div class="final-glow"></div></div>
+  <div class="wrap final-inner">
+    <h2 class="final-title"><span class="ft-light">Find out</span> <span class="ft-heavy">where your code stands.</span></h2>
+    <p class="final-sub">Getting a quote is <b>free</b> and takes <b>a few minutes</b>. It isn't a sales call. You get a <b>fixed price</b> and a <b>delivery date</b>.</p>
+    <div class="final-cta">
+      <a class="btn-magnet" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A"><span>Get your quote</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+    <!-- LAUNCH CONDITION: the Anthropic API line is true only once client inspections run on the Anthropic API (not the subscription CLI). -->
+    <ul class="final-trust">
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle pathLength="1" cx="12" cy="12" r="3"/></svg>
+        <p><b>Read-only access</b> to your repository.</p>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M7 3h7l5 5v13H7z"/><path pathLength="1" d="M14 3v5h5"/><path pathLength="1" d="M10 14l2 2 4-4"/></svg>
+        <p><b>Mutual NDA</b> as standard.</p>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path pathLength="1" d="M9 12l2 2 4-4"/></svg>
+        <p>Your code is read through Anthropic's commercial API, which by its terms <b>does not train on it</b>.</p>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>
+        <p>My copy of your code is <b>deleted within 30 days</b> after the work ends or sooner on request.</p>
+      </li>
     </ul>
-    <p class="contact">Questions or early inquiries: <a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
-  </main>
+  </div>
+</section>
+</main>
 
-  <footer>
-    <span>Led by Zachary Ernst · © 2026 Cantus Works</span>
-    <a href="https://github.com/zernst3/camerata-orchestrator">Camerata on GitHub</a>
-  </footer>
-</div>
+<!-- 12. FOOTER -->
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <img class="foot-mark" src="logo-mark.svg" width="36" height="36" alt="">
+      <p class="foot-name">Cantus Works</p>
+      <p>Zachary Ernst</p>
+      <p><a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
+      <p><a href="https://www.linkedin.com/company/cantusworks">LinkedIn</a> &middot; <a href="https://github.com/zernst3">GitHub</a></p>
+      <p>Also available: new builds and stack migrations on the same rules. <a href="mailto:hello@cantusworks.com?subject=New%20build%20or%20migration">Ask for a quote.</a></p>
+    </div>
+    <nav aria-label="Footer sections">
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#receive">What you receive</a></li>
+        <li><a href="#who">Who reads your code</a></li>
+        <li><a href="#questions">Questions</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </nav>
+    <div>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li>&copy; 2026</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-credit">
+    <span class="foot-credit-label">Website by</span>
+    <a class="foot-credit-link" href="https://agenciacontesta.com/" target="_blank" rel="noopener">
+      <span>Contesta</span>
+      <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="hero.js?v=20261118b"></script>
+<script src="how.js"></script>
+<script src="services.js"></script>
+<script src="receive.js"></script>
+<script src="who.js"></script>
+<script src="faq.js"></script>
+<script src="final.js"></script>
 </body>
 </html>
+

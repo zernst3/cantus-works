@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How Camerata works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F7F7F7">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="The engine behind every Cantus Works inspection, and why one person still signs every report.">
+<meta property="og:title" content="The engine behind every Cantus Works inspection, and why one person still signs every report.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="styles.css?v=20261118b">
+</head>
+<body>
+
+<header class="site" id="hdr">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="index.html"><img src="logo-mark.svg" width="28" height="28" alt="">CANTUS WORKS</a>
+    <div class="nav-right">
+      <nav class="navlinks" aria-label="Sections">
+        <a href="index.html#services">Services</a>
+        <a href="blog.html" aria-current="page">Blog</a>
+      </nav>
+      <a class="btn btn-solid btn-sm" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<article class="post-article">
+  <div class="wrap article-wrap">
+    <!-- DRAFT for Zach's rewrite: assembled from sentences verified against the repo on 2026-09-22 (Website draft v1 - reconciliation.md, "Substance from the Camerata docs") and the September site's "what actually happened" story. Re-check numbers before publishing. Never describe HOW detection works. -->
+    <p class="eyebrow"><a href="blog.html">Blog</a></p>
+    <h1>How Camerata works</h1>
+    <p class="lede">Camerata is the engine I built for this work. It reads every file in your repository against written rules for security and architecture, <mark style="background:#ffe95c;color:#111">and every judgment call comes to me.</mark></p>
+    <h2>Two passes, then a person</h2>
+    <ul class="check-list">
+      <li><b>A mechanical pass</b> · for what a rule can decide exactly: leaked keys, unsafe database access, settings that leave a door open.</li>
+      <li><b>A reasoning pass</b> · for the architecture: a write with no check on who is allowed, a service that goes around the data layer, the same logic written twice.</li>
+      <li><b>One person</b> · <mark style="background:#ffe95c;color:#111">who reviews every pattern, every critical finding and every uncertain call before you see them.</mark></li>
+    </ul>
+    <p>The engine proposes. I decide. The report says how many candidates I threw out.</p>
+    <h2>What every finding carries</h2>
+    <ul class="check-list">
+      <li><b>The standard it breaks</b> · with a link, so your next engineer can check my work, not take my word.</li>
+      <li><b>The hours it takes to fix</b> · so the report answers "fix or rebuild" in numbers.</li>
+      <li><b>How certain it is</b> · where I am not certain, the report says so.</li>
+    </ul>
+    <h2>Why written rules</h2>
+    <p>I learned this on my own projects. An agent kept putting database calls in the service layer, despite the separation I had set up in example endpoints. The examples were not enough. So I wrote a hard rule and had a machine enforce it: database calls live only in the repository layer. It hasn't made that mistake since.</p>
+    <p>Examples are not enforcement. Rules are.</p>
+    <h2>What you can check yourself</h2>
+    <ul class="check-list">
+      <li>437 written rules, 410 of them traceable to a published standard.</li>
+      <li>Source-available on GitHub, so you can read it before you hire me.</li>
+      <li>Camerata is checked against its own rules on every change.</li>
+    </ul>
+    <div class="article-cta"><a class="btn btn-solid btn-lg" href="mailto:hello@cantusworks.com?subject=Quote%20request&amp;body=Stack%3A%0D%0ARough%20size%20(or%20not%20sure)%3A%0D%0AWho%20is%20asking%20(investor%2C%20customer%2C%20me)%3A%0D%0ADeadline%2C%20if%20any%3A%0D%0A">Get your quote</a></div>
+  </div>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <img class="foot-mark" src="logo-mark.svg" width="36" height="36" alt="">
+      <p class="foot-name">Cantus Works</p>
+      <p>Zachary Ernst</p>
+      <p><a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
+      <p><a href="https://www.linkedin.com/company/cantusworks">LinkedIn</a> &middot; <a href="https://github.com/zernst3">GitHub</a></p>
+      <p>Also available: new builds and stack migrations on the same rules. <a href="mailto:hello@cantusworks.com?subject=New%20build%20or%20migration">Ask for a quote.</a></p>
+    </div>
+    <nav aria-label="Footer sections">
+      <ul>
+        <li><a href="index.html#how">How it works</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#receive">What you receive</a></li>
+        <li><a href="index.html#who">Who reads your code</a></li>
+        <li><a href="index.html#questions">Questions</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </nav>
+    <div>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li>&copy; 2026</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-credit">
+    <span class="foot-credit-label">Website by</span>
+    <a class="foot-credit-link" href="https://agenciacontesta.com/" target="_blank" rel="noopener">
+      <span>Contesta</span>
+      <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+</body>
+</html>
