@@ -241,7 +241,7 @@ main > section.hero > .wrap { width: 100%; }
 @keyframes bandBreathe { from { stroke-width: 98; } to { stroke-width: 138; } }
 @keyframes bandFlow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -2480; } }
 .hero-stroke {
-  position: absolute; left: -8vw; right: -8vw; bottom: 16%; height: 1.5px;
+  position: absolute; left: -8vw; right: -8vw; bottom: 22px; height: 1.5px; /* sits in the hero's bottom padding, below the buttons at any screen size */
   background: linear-gradient(90deg,
     transparent 0%,
     rgba(43, 85, 128, 0.12) 20%,
@@ -1249,3 +1249,7 @@ main p:not(.eyebrow) a:not([class]):hover, main li a:not([class]):hover { backgr
 main .final p:not(.eyebrow) a:not([class]) { color: #fff; background: rgba(255, 255, 255, 0.16); }
 main .final p:not(.eyebrow) a:not([class]):hover { background: rgba(255, 255, 255, 0.26); }
 
+
+/* No highlighter on plain text (Zach, 2026-11-21): only links get a highlight.
+   The marks stay in the HTML because services.js and receive.js reference them. */
+.svc-mark, .svc-find .svc-mark, .rcv-mark, .faq-mark { background: none !important; padding: 0; }

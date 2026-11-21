@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="fonts/fonts.css">
-<link rel="stylesheet" href="styles.css?v=20261121h">
+<link rel="stylesheet" href="styles.css?v=20261121j">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="0110ca8d-b614-43de-983e-fb62bd26c7d7" data-domains="cantusworks.com"></script>
 </head>
 <body>
@@ -61,7 +61,7 @@
     <p>Beyond security, I check the caliber of your code: whether it does the same thing in one consistent way, whether it follows sound architecture, whether the same logic is written more than once and whether your tests actually test anything. The report also lists the good practices your code already follows consistently, so you know what to keep.</p>
     <h2 id="rules">Three of the rules, exactly as Camerata reads them</h2>
     <p class="rule-links"><a class="btn btn-ghost" href="#rule-1">No hardcoded credentials</a><a class="btn btn-ghost" href="#rule-2">Retries never double-charge</a><a class="btn btn-ghost" href="#rule-3">One logger, used everywhere</a></p>
-    <p>Every rule is public. <a href="https://github.com/zernst3/camerata-orchestrator">Read them on GitHub.</a></p>
+    <p>Every rule is public. <a href="https://github.com/zernst3/camerata-orchestrator" target="_blank" rel="noopener">Read them on GitHub.</a></p>
     <div class="article-cta"><a class="btn btn-solid btn-lg" href="quote.html" data-umami-event="quote-click" data-umami-event-need="general">Get your quote</a></div>
   </div>
 </article>
@@ -118,7 +118,7 @@ id = &quot;allow-hardcoded-for-internal-tools&quot;
 violates = true
 label = &quot;Allow hardcoded credentials in internal-only tooling&quot;
 directive = &quot;credential literals may be hardcoded in scripts or tools that are never deployed externally, on the assumption that only trusted engineers can read the repository&quot;
-why = &quot;Rejected: repository access scope changes over time (new hires, contractors, an accidental visibility flip, a fork), and a credential hardcoded &#x27;for now&#x27; outlives the assumption that justified it. The environment-variable/secrets-manager pattern costs one extra line at call time and removes the assumption entirely.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/universal/sec-no-hardcoded-secrets-1.toml">View on GitHub</a></p></div></div>
+why = &quot;Rejected: repository access scope changes over time (new hires, contractors, an accidental visibility flip, a fork), and a credential hardcoded &#x27;for now&#x27; outlives the assumption that justified it. The environment-variable/secrets-manager pattern costs one extra line at call time and removes the assumption entirely.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/universal/sec-no-hardcoded-secrets-1.toml" target="_blank" rel="noopener">View on GitHub</a></p></div></div>
 <div class="ov" id="rule-2" role="dialog" aria-label="Retries never double-charge"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A rule with rejected alternatives</p><h3>Retries never double-charge</h3><p class="k">The question</p><p>When a client retries a write that charges a card, sends an email or starts a job, how does the API keep it from happening twice?</p><p class="k">Sources</p><ul><li>IETF draft: the Idempotency-Key HTTP header</li><li>Stripe: Idempotent Requests</li></ul><p class="k">What it requires</p><p>Every write with an external side effect accepts an idempotency key; a retry with the same key returns the stored result instead of running the operation again.</p><p class="k">Rejected alternative, and why</p><p><b>No idempotency contract, or no server-side deduplication at all.</b> Rejected: networks time out, the client can't tell whether the first request landed and without a key every retry risks a double charge or a duplicate email.</p><p class="k">The fix it recommends</p><p>Require the key on the endpoint, store the response by key and verify by sending the same request twice.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-IDEMPOTENCY-KEYS-1&quot;
 version = 3
 title = &quot;Non-GET writes that trigger external side effects require an idempotency key&quot;
@@ -170,7 +170,7 @@ id = &quot;the-api-does-no-server-side-deduplication-at-all&quot;
 violates = true
 label = &quot;No deduplication&quot;
 directive = &quot;the API does no server-side deduplication at all; each consumer is responsible for not retrying after a timeout, and the server treats every request as new&quot;
-why = &quot;Pushing correctness onto every consumer means one careless caller produces duplicates and the server has no way to defend against it.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/api-layer/arch-idempotency-keys-1.toml">View on GitHub</a></p></div></div>
+why = &quot;Pushing correctness onto every consumer means one careless caller produces duplicates and the server has no way to defend against it.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/api-layer/arch-idempotency-keys-1.toml" target="_blank" rel="noopener">View on GitHub</a></p></div></div>
 <div class="ov" id="rule-3" role="dialog" aria-label="One logger, used everywhere"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A consistency rule</p><h3>One logger, used everywhere</h3><p class="k">The question</p><p>Once a structured logger is in use, does every log call go through it?</p><p class="k">Sources</p><ul><li>OWASP Logging Cheat Sheet</li><li>OWASP Logging Vocabulary Cheat Sheet</li></ul><p class="k">What it requires</p><p>In a repository that has already adopted a structured logger, every operational log line goes through it. It only fires on inconsistency; it never says a repository must adopt one.</p><p class="k">Rejected alternative, and why</p><p><b>Allow mixed logging styles.</b> Rejected: a log search built around the structured format silently misses every line that bypasses it.</p><p class="k">The fix it recommends</p><p>Swap each bare print or console call for the same message through the existing logger, at the same level.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-OBSERVABILITY-LOG-CONSISTENCY-1&quot;
 version = 3
 title = &quot;Once a repo has adopted a structured logger, every log call site goes through it; bare print/console-style calls do not sit alongside it&quot;
@@ -230,7 +230,7 @@ id = &quot;allow-mixed-logging-styles&quot;
 violates = true
 label = &quot;Allow bare print/console-style calls to coexist with the repo&#x27;s adopted structured logger&quot;
 directive = &quot;Individual files or call sites may use a bare print/console.log/puts/fmt.Println-style call even in a repo that has otherwise adopted a structured logger elsewhere.&quot;
-why = &quot;Rejected: a log aggregator or a field-based search built around the structured logger&#x27;s output format gets a silently incomplete picture the moment some call sites bypass it: the repo pays the full cost of adopting structured logging and still does not get a complete, uniformly-parseable log stream out of it.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/universal/arch-observability-log-consistency-1.toml">View on GitHub</a></p></div></div>
+why = &quot;Rejected: a log aggregator or a field-based search built around the structured logger&#x27;s output format gets a silently incomplete picture the moment some call sites bypass it: the repo pays the full cost of adopting structured logging and still does not get a complete, uniformly-parseable log stream out of it.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/universal/arch-observability-log-consistency-1.toml" target="_blank" rel="noopener">View on GitHub</a></p></div></div>
 </main>
 
 <footer class="site-foot">
@@ -240,7 +240,7 @@ why = &quot;Rejected: a log aggregator or a field-based search built around the 
       <p class="foot-name">Cantus Works</p>
       <p>Zachary Ernst</p>
       <p><a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
-      <p><a href="https://github.com/zernst3">GitHub</a></p>
+      <p><a href="https://github.com/zernst3" target="_blank" rel="noopener">GitHub</a></p>
     </div>
     <nav aria-label="Footer sections">
       <ul>
