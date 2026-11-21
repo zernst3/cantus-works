@@ -676,7 +676,10 @@ main > section.hero > .wrap { width: 100%; }
    Each column is an object above its name, all upright and the same size. The active one
    (.is-active) is in full colour with a blue ring and a scan sweeping across it as it takes over;
    the others step back, faded. receive.js cycles it while the section is on screen. */
-#receive { --k-broken: #E5484D; --k-incons: #D98A0B; --k-well: #18A374; overflow-x: clip; }
+#receive { --k-broken: #E5484D; --k-incons: #D98A0B; --k-well: #18A374;
+  /* darker text versions so labels pass WCAG AA contrast (4.5:1) */
+  --k-broken-text: #C42D33; --k-incons-text: #9A5B00; --k-well-text: #0B7A55; --k-xls: #15803D;
+  overflow-x: clip; }
 
 /* row of objects */
 .rcv-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.2vw, 28px); margin-top: var(--s7); }
@@ -703,8 +706,8 @@ main > section.hero > .wrap { width: 100%; }
 @keyframes docSweep { 0% { transform: translateY(-100%); opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(330px); opacity: 0; } }
 
 .doc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-.doc-type { font: 700 10.5px/1 var(--mono); letter-spacing: .12em; padding: 6px 9px; border-radius: 6px; color: #fff; background: var(--k-broken); }
-.doc-type.xls { background: #16A34A; }
+.doc-type { font: 700 10.5px/1 var(--mono); letter-spacing: .12em; padding: 6px 9px; border-radius: 6px; color: #fff; background: var(--k-broken-text); }
+.doc-type.xls { background: var(--k-xls); }
 .doc-type.call { background: var(--vivid); }
 .doc-meta { font: 500 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
 .doc-title { font: 700 21px/1.2 var(--display); letter-spacing: -0.015em; color: var(--ink); margin: 0 0 16px; }
@@ -714,7 +717,7 @@ main > section.hero > .wrap { width: 100%; }
 .doc-kpis { display: flex; flex-wrap: wrap; gap: 6px; }
 .doc-kpis span, .pill { display: inline-flex; align-items: center; gap: 6px; font: 600 11px/1 var(--font); padding: 6px 9px; border-radius: 999px; }
 .doc-kpis i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.k-broken { color: var(--k-broken); } .k-incons { color: var(--k-incons); } .k-well { color: var(--k-well); }
+.k-broken { color: var(--k-broken-text); } .k-incons { color: var(--k-incons-text); } .k-well { color: var(--k-well-text); }
 .doc-kpis .k-broken, .pill.k-broken { background: rgba(229, 72, 77, 0.1); }
 .doc-kpis .k-incons, .pill.k-incons { background: rgba(217, 138, 11, 0.12); }
 .doc-kpis .k-well, .pill.k-well { background: rgba(24, 163, 116, 0.1); }
@@ -733,7 +736,7 @@ main > section.hero > .wrap { width: 100%; }
 .xls-h span { color: var(--ink-soft); }
 .xls-tabs { display: flex; gap: 4px; margin-top: 12px; font: 500 11px/1 var(--mono); }
 .xls-tabs span { padding: 6px 10px; border-radius: 6px; color: var(--ink-faint); background: rgba(15, 24, 38, 0.04); }
-.xls-tabs span.on { color: #fff; background: #16A34A; }
+.xls-tabs span.on { color: #fff; background: var(--k-xls); }
 
 .rcv-call { background: linear-gradient(160deg, #0F1826, #1B2B4E); color: #fff; border-color: rgba(255, 255, 255, 0.08); }
 .rcv-call .doc-meta { color: rgba(255, 255, 255, 0.55); }
