@@ -1236,3 +1236,15 @@ footer.site-foot { view-transition-name: site-footer; }
 /* Code lines inside article prose (e.g. the checkout article). */
 .article-wrap > pre { font-family: var(--mono); font-size: 14px; line-height: 1.5; background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; overflow-x: auto; color: var(--ink); margin: 14px 0; }
 .article-wrap p code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-deep); padding: 1px 5px; border-radius: 4px; }
+
+/* Every link in running text is highlighted so readers can see it's a link.
+   Buttons, navigation, footer, eyebrows, blog-list titles and styled links (they all carry a class) are untouched. */
+main p:not(.eyebrow) a:not([class]), main li a:not([class]) {
+  font-weight: 600; color: var(--vivid); background: var(--vivid-mist);
+  padding: 1px 6px; border-radius: 5px; text-decoration: none;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+main p:not(.eyebrow) a:not([class]):hover, main li a:not([class]):hover { background: var(--accent-mist); text-decoration: underline; }
+/* Same idea on the dark closing section. */
+main .final p:not(.eyebrow) a:not([class]) { color: #fff; background: rgba(255, 255, 255, 0.16); }
+main .final p:not(.eyebrow) a:not([class]):hover { background: rgba(255, 255, 255, 0.26); }
