@@ -1253,3 +1253,6 @@ main .final p:not(.eyebrow) a:not([class]):hover { background: rgba(255, 255, 25
 /* No highlighter on plain text (Zach, 2026-11-21): only links get a highlight.
    The marks stay in the HTML because services.js and receive.js reference them. */
 .svc-mark, .svc-find .svc-mark, .rcv-mark, .faq-mark { background: none !important; padding: 0; }
+
+/* The hero's blue line already marks where the hero ends, so the gray divider under it is dropped. */
+main > section.hero + section { border-top: 0; }
