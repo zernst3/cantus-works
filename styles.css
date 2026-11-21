@@ -1177,3 +1177,6 @@ main > section.blog-list { padding: clamp(24px, 4vw, 40px) 0 clamp(64px, 9vw, 10
 .ov pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.5 var(--mono); background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px; max-height: 420px; overflow-y: auto; }
 .ov details { margin-top: 16px; } .ov summary { cursor: pointer; font-weight: 600; color: var(--accent); }
 @media (max-width: 600px) { .post-article { padding-top: 96px; } }
+
+/* Workbook illustration: keep the Kind pill on one line ("Your conventions"). */
+.xls-row .pill { white-space: nowrap; }

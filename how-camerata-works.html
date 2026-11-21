@@ -36,18 +36,18 @@
     <!-- DRAFT for Zach's rewrite: assembled from sentences verified against the repo on 2026-09-22 (Website draft v1 - reconciliation.md, "Substance from the Camerata docs") and the September site's "what actually happened" story. Re-check numbers before publishing. Never describe HOW detection works. -->
     <p class="eyebrow"><a href="blog.html">Blog</a></p>
     <h1>How Camerata works</h1>
-    <p class="lede">Camerata is the engine I built for this work. It reads every file in your repository against written rules for security and architecture, <mark style="background:#ffe95c;color:#111">and every judgment call comes to me.</mark></p>
-    <h2>Two passes, then a person</h2>
+    <p class="lede">Camerata is the engine I built for this work. The engine supplies the structure: it lists every source file, makes sure each one is read and keeps the record. AI models supply narrow judgment, each answering one question, using the smallest model that answers it well. Every call that matters comes to me.</p>
+    <h2>One engine, narrow AI jobs, then a person</h2>
     <ul class="check-list">
-      <li><b>A mechanical pass</b> · for what a rule can decide exactly: leaked keys, unsafe database access, settings that leave a door open.</li>
-      <li><b>A reasoning pass</b> · for the architecture: a write with no check on who is allowed, a service that goes around the data layer, the same logic written twice.</li>
-      <li><b>One person</b> · <mark style="background:#ffe95c;color:#111">who reviews every pattern, every critical finding and every uncertain call before you see them.</mark></li>
+      <li><b>Automated checks</b> · for what a rule can decide exactly: leaked keys, unsafe database access, settings that leave a door open and every block of code that was copied.</li>
+      <li><b>Narrow AI jobs</b> · the strongest model reads every source file against the rules for your stack, then checks its own work rule by rule. Smaller, faster models each answer one closed question: is this copy the same decision, what is the fix, is this the same problem written twice.</li>
+      <li><b>One person</b> · who reviews every critical problem and every call the engine isn't sure of before you see them.</li>
     </ul>
-    <p>The engine proposes. I decide. The report says how many candidates I threw out.</p>
-    <h2>What every finding carries</h2>
+    <p>The engine proposes. I decide. The report says how many candidates I threw out. Coverage never depends on a model's attention: the record of what was read is the coverage list in your report.</p>
+    <h2>What every problem carries</h2>
     <ul class="check-list">
       <li><b>The standard it breaks</b> · with a link, so your next engineer can check my work, not take my word.</li>
-      <li><b>The hours it takes to fix</b> · so the report answers "fix or rebuild" in numbers.</li>
+      <li><b>The hours it takes to fix</b> · so you can budget the fixes.</li>
       <li><b>How certain it is</b> · where I am not certain, the report says so.</li>
     </ul>
     <h2>Why written rules</h2>
@@ -55,7 +55,7 @@
     <p>Examples are not enforcement. Rules are.</p>
     <h2>What you can check yourself</h2>
     <ul class="check-list">
-      <li>437 written rules, 410 of them traceable to a published standard.</li>
+      <li>Over 400 written rules, nearly all traceable to a published standard.</li>
       <li>Source-available on GitHub, so you can read it before you hire me.</li>
       <li>Camerata is checked against its own rules on every change.</li>
     </ul>
@@ -71,8 +71,7 @@
       <p class="foot-name">Cantus Works</p>
       <p>Zachary Ernst</p>
       <p><a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
-      <p><a href="https://www.linkedin.com/company/cantusworks">LinkedIn</a> &middot; <a href="https://github.com/zernst3">GitHub</a></p>
-      <p>Also available: new builds and stack migrations on the same rules. <a href="mailto:hello@cantusworks.com?subject=New%20build%20or%20migration">Ask for a quote.</a></p>
+      <p><a href="https://github.com/zernst3">GitHub</a></p>
     </div>
     <nav aria-label="Footer sections">
       <ul>
