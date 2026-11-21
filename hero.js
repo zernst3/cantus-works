@@ -52,7 +52,7 @@
     .fromTo('.hero h1 .hl2',
       { opacity: 0, y: 28, filter: 'blur(8px)' },
       { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, ease: 'power3.out', clearProps: 'opacity,transform,filter' }, 0.6)
-    .fromTo(['.standfirst', '.hero-cta'], { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, stagger: 0.12 }, 1.1)
+    .fromTo(['.standfirst', '.hero-cta', '.hero-note'], { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, stagger: 0.12 }, 1.1)
     .fromTo(stage, { y: 90, opacity: 0, rotationX: 22, transformPerspective: 1400 },
       { y: 0, opacity: 1, rotationX: 0, duration: 1.5 }, 0.35)
     .fromTo('.report-caption', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 1.4)
