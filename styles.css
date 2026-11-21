@@ -303,7 +303,7 @@ main > section.hero > .wrap { width: 100%; }
 /* intro start states, only while GSAP owns the hero */
 .hero-anim .hero h1 .w > span { transform: translateY(110%); }
 .hero-anim .hero h1 .hl2 { opacity: 0; }
-.hero-anim .standfirst, .hero-anim .hero-cta, .hero-anim .hero-note, .hero-anim .report-stage, .hero-anim .report-caption { opacity: 0; }
+.hero-anim .standfirst, .hero-anim .hero-cta, .hero-anim .report-stage, .hero-anim .report-caption { opacity: 0; }
 .standfirst {
   font-size: clamp(16.5px, 1.4vw, 18.5px); color: var(--ink-soft);
   max-width: 52ch; margin: 0 0 var(--s6); line-height: 1.58;
@@ -1249,5 +1249,3 @@ main p:not(.eyebrow) a:not([class]):hover, main li a:not([class]):hover { backgr
 main .final p:not(.eyebrow) a:not([class]) { color: #fff; background: rgba(255, 255, 255, 0.16); }
 main .final p:not(.eyebrow) a:not([class]):hover { background: rgba(255, 255, 255, 0.26); }
 
-/* Hero: one line under the buttons saying the sample button is the PDF and where the full package is. */
-.hero-note { margin: 12px 0 0; font-size: 14px; color: var(--ink-soft); }
