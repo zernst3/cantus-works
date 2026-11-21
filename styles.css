@@ -1228,3 +1228,11 @@ footer.site-foot { view-transition-name: site-footer; }
 .back-row { margin: 0 0 14px; }
 .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--ink-soft); text-decoration: none; }
 .back-link:hover { color: var(--ink); text-decoration: underline; }
+
+/* "Download the full package": bold and highlighted so technical readers spot it. */
+.pkg-link { font-weight: 700; color: var(--vivid); background: var(--vivid-mist); padding: 2px 8px; border-radius: 6px; text-decoration: none; white-space: nowrap; }
+.pkg-link:hover { background: var(--accent-mist); text-decoration: underline; }
+
+/* Code lines inside article prose (e.g. the checkout article). */
+.article-wrap > pre { font-family: var(--mono); font-size: 14px; line-height: 1.5; background: var(--bg-deep); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; overflow-x: auto; color: var(--ink); margin: 14px 0; }
+.article-wrap p code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-deep); padding: 1px 5px; border-radius: 4px; }

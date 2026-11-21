@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Cantus Works","url":"https://cantusworks.com/","logo":"https://cantusworks.com/logo-mark.svg","image":"https://cantusworks.com/og-image.png","email":"hello@cantusworks.com","description":"Code inspections for startups: every source file read against written security and architecture rules, reviewed and signed by one engineer.","founder":{"@type":"Person","name":"Zachary Ernst","jobTitle":"Founder and Principal Engineer"},"sameAs":["https://github.com/zernst3"]}</script>
 <link rel="stylesheet" href="fonts/fonts.css">
-<link rel="stylesheet" href="styles.css?v=20261121b">
+<link rel="stylesheet" href="styles.css?v=20261121d">
 <script>
   /* hide the hero until GSAP plays its intro; a safety net removes it if GSAP never loads */
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -74,7 +74,7 @@
         <p class="standfirst">Security review and technical due diligence in one signed report. Show it to the customer who asks if their data is safe, the investor who asks what they're buying or the first engineer who inherits it.</p>
         <div class="hero-cta">
           <a class="btn btn-solid btn-lg" href="quote.html" data-umami-event="quote-click" data-umami-event-need="general">Get your quote</a>
-          <a class="btn btn-lg" href="sample/cantus-works-sample.pdf" data-umami-event="sample-download-pdf">Download the sample report</a>
+          <a class="btn btn-lg" href="sample/cantus-works-sample.pdf" data-umami-event="sample-download-pdf" target="_blank" rel="noopener">Download the sample report</a>
         </div>
       </div>
 
@@ -95,7 +95,7 @@
               <span>app/api/checkout/route.ts, line 8</span>
             </div>
             <p class="impact">The amount charged comes from the browser, not from the booking's stored price, so any signed-in user can pay whatever they like.</p>
-            <p class="fix"><b>Fix:</b> compute the charge on the server from the booking's stored price, and reject any booking that doesn't belong to the signed-in user.</p>
+            <p class="fix"><b>Fix:</b> look up the booking's stored price on the server and charge that, with the platform fee worked out from the same number.</p>
           </div>
           <div class="report-foot">Confidence: high &middot; reviewed by Zachary Ernst</div>
         </div>
@@ -307,8 +307,8 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span><mark class="rcv-mark">I review every critical problem and every call the engine isn't sure of.</mark></span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Your report belongs to you. I never share it.</span></li>
         </ul>
-        <p class="dated">Dated and tied to the exact version of your code that was read. Ready to share with your investors or customers. The sample report was generated in November 2026 from a real run on a demo codebase; its reviewer decisions are illustrative. Technical reader? <a href="sample/cantus-works-sample.zip" data-umami-event="sample-download-zip">Download the full package</a>: the PDF, workbook, JSON, CSV and README.</p>
-        <div class="cta-row"><a class="btn btn-solid btn-lg" href="sample/cantus-works-sample.pdf" data-umami-event="sample-download-pdf">Download the sample report</a></div>
+        <p class="dated">Dated and tied to the exact version of your code that was read. Ready to share with your investors or customers. The sample report was generated in November 2026 from a real run on a demo codebase; its reviewer decisions are illustrative. Technical reader? <a class="pkg-link" href="sample/cantus-works-sample.zip" data-umami-event="sample-download-zip">Download the full package</a>: the PDF, workbook, JSON, CSV and README.</p>
+        <div class="cta-row"><a class="btn btn-solid btn-lg" href="sample/cantus-works-sample.pdf" data-umami-event="sample-download-pdf" target="_blank" rel="noopener">Download the sample report</a></div>
       </div>
     </div>
   </div>
