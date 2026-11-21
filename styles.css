@@ -582,6 +582,22 @@ main > section.hero > .wrap { width: 100%; }
 /* level 3 */
 .svc p.body { margin: 0 0 var(--s4); color: var(--ink-soft); font-size: 14.5px; line-height: 1.6; }
 .svc p.small { margin: 0 0 var(--s4); color: var(--ink-faint); font-size: 12.5px; line-height: 1.55; }
+/* "What this includes": the card's details, folded away until asked for */
+.svc details.svc-more { margin: 0 0 var(--s4); interpolate-size: allow-keywords; }
+.svc .svc-more summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 600; line-height: 1.5; color: var(--vivid); border-radius: 4px; }
+.svc .svc-more summary::-webkit-details-marker { display: none; }
+.svc .svc-more summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .35s var(--ease); }
+.svc .svc-more[open] summary::after { transform: translateY(2px) rotate(225deg); }
+.svc .svc-more summary:hover { text-decoration: underline; }
+.svc .svc-more summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.svc-find .svc-more summary { color: #fff; }
+.svc .svc-more-body { padding-top: 10px; }
+.svc .svc-more-body p { margin: 0; }
+.svc details.svc-more::details-content { block-size: 0; overflow: hidden; opacity: 0; transition: block-size .4s var(--ease), opacity .3s ease, content-visibility .4s allow-discrete; }
+.svc details.svc-more[open]::details-content { block-size: auto; opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .svc details.svc-more::details-content, .svc .svc-more summary::after { transition: none; }
+}
 .svc .btn { margin-top: auto; align-self: flex-start; }
 .svc-mark {
   color: inherit; padding: 0 1px;
