@@ -60,3 +60,16 @@
   }
 
 })();
+
+/* Back links on subpages: return to the previous page on this site, else the link's own fallback. */
+(function () {
+  document.querySelectorAll('a[data-back]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var ref = document.referrer;
+      if (ref && ref.indexOf(window.location.origin) === 0 && window.history.length > 1) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
+  });
+})();

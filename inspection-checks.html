@@ -19,7 +19,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="fonts/fonts.css">
-<link rel="stylesheet" href="styles.css?v=20261121a">
+<link rel="stylesheet" href="styles.css?v=20261121b">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="0110ca8d-b614-43de-983e-fb62bd26c7d7" data-domains="cantusworks.com"></script>
 </head>
 <body>
@@ -40,6 +40,7 @@
 <main>
 <article class="post-article">
   <div class="wrap article-wrap">
+<p class="back-row"><a class="back-link" href="blog.html" data-back>&larr; Back</a></p>
     <p class="eyebrow"><a href="blog.html">Blog</a></p>
     <h1>What a Cantus Works inspection checks</h1>
     <p class="lede">Every inspection reads your whole repository against the rules that apply to your stack, drawn from a library of over 400. Nearly all of them cite the published standard they come from: the platform's own documentation, its security advisor or an established reference such as OWASP.</p>
@@ -65,7 +66,7 @@
   </div>
 </article>
 <div class="ov" id="rule-1" role="dialog" aria-label="No hardcoded credentials"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A mechanical check</p><h3>No hardcoded credentials</h3><p class="k">The question</p><p>Where do credentials (API keys, tokens, passwords) live?</p><p class="k">Sources</p><ul><li>CWE-798: Use of Hard-coded Credentials</li><li>OWASP Secrets Management Cheat Sheet</li></ul><p class="k">What it requires</p><p>Credential values never appear in committed source or config; they come from environment variables or a secrets manager.</p><p class="k">Rejected alternative, and why</p><p><b>Allow hardcoded credentials in internal-only tools.</b> Rejected: who can read a repository changes over time, and a credential hardcoded "for now" outlives the assumption.</p><p class="k">The fix it recommends</p><p>Remove the value, load it from the environment or a secrets manager and rotate it, since a committed secret must be treated as disclosed.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;SEC-NO-HARDCODED-SECRETS-1&quot;
-version = 2
+version = 4
 title = &quot;Credential literals (API keys, tokens, passwords) are never hardcoded in source; they live in environment variables or a secrets manager&quot;
 domain = &quot;universal&quot;
 layer = &quot;universal&quot;
@@ -75,10 +76,6 @@ inspectable = true
 cwe = [&quot;CWE-798&quot;]
 default = true
 verification = &quot;grounded&quot;
-
-[[sources]]
-url = &quot;docs/ENFORCEMENT.md&quot;
-title = &quot;docs/ENFORCEMENT.md — RULE_REGISTRY §SEC-NO-HARDCODED-SECRETS-1 (enforced gate rule)&quot;
 
 [[sources]]
 url = &quot;https://cwe.mitre.org/data/definitions/798.html&quot;
@@ -105,26 +102,25 @@ it must be treated as already disclosed.
 [[option]]
 id = &quot;env-or-secrets-manager&quot;
 label = &quot;Credential literals live in env vars or a secrets manager, never source&quot;
-directive = &quot;A quoted literal of 24+ contiguous alphanumeric characters assigned near an identifier containing key/secret/token/password/credential vocabulary is never written into a source or config file committed to the repository. Tests that need a credential value use an environment variable, a secrets manager fetched at test startup or a clearly-fake placeholder that cannot be mistaken for the shape of a real key. The gate enforces this with a heuristic match (identifier vocabulary + a nearby long opaque literal) — it is not an entropy/AST analysis, so it complements rather than replaces a dedicated secret-detection tool.&quot;
+directive = &quot;A quoted literal of 24+ contiguous alphanumeric characters assigned near an identifier containing key/secret/token/password/credential vocabulary is never written into a source or config file committed to the repository. Tests that need a credential value use an environment variable, a secrets manager fetched at test startup or a clearly-fake placeholder that cannot be mistaken for the shape of a real key. The gate enforces this with a heuristic match (identifier vocabulary + a nearby long opaque literal); it is not an entropy/AST analysis, so it complements rather than replaces a dedicated secret-detection tool. Not a credential: a reference to one (an environment variable name, a secret manager or secret object name, a Terraform expression), a value encrypted for committing (a sealed secret), a module path, a label or cache key and the id of a domain object that happens to be called token or key. A value in a test file is reported as low and needs review.&quot;
 remediation = &quot;&quot;&quot;
 Remove the hardcoded credential literal from the source or config file, and load it from an environment variable or secrets manager instead. Rotate the exposed value, since it was committed to version control and must be treated as disclosed. Verify by searching the codebase for the literal value and confirming it no longer appears, while the integration still authenticates using the externally-loaded value.
 &quot;&quot;&quot;
 effort = &quot;low&quot;
 finding_headline = &quot;Your `&lt;path&gt;` file has a credential value hardcoded directly in the source.&quot;
 finding_detail = &quot;&quot;&quot;
-A secret written directly into source code ships to everyone who can read this repository — including its full git history — rather than staying somewhere access can be revoked without a code change. The value in `&lt;path&gt;` is &lt;gitignore-status&gt; and is &lt;history-status&gt;. Move it to an environment variable or secrets manager, and rotate the exposed credential.
+A secret written directly into source code ships to everyone who can read this repository (including its full git history) rather than staying somewhere access can be revoked without a code change. The value in `&lt;path&gt;` is &lt;gitignore-status&gt; and is &lt;history-status&gt;. Move it to an environment variable or secrets manager, and rotate the exposed credential.
 &quot;&quot;&quot;
-why = &quot;A hardcoded credential is disclosed the moment the commit is pushed, whether or not the repository is public today — a repository&#x27;s visibility can change, forks persist independently and CI logs/artifacts routinely echo file contents. Name-vocabulary + opaque-literal matching catches providers with no fixed token shape of their own, closing the gap `SEC-NO-VENDOR-TOKEN-1`&#x27;s prefix-anchored patterns leave open.&quot;
+why = &quot;A hardcoded credential is disclosed the moment the commit is pushed, whether or not the repository is public today: a repository&#x27;s visibility can change, forks persist independently and CI logs/artifacts routinely echo file contents. Name-vocabulary + opaque-literal matching catches providers with no fixed token shape of their own, closing the gap `SEC-NO-VENDOR-TOKEN-1`&#x27;s prefix-anchored patterns leave open.&quot;
 
 [[option]]
 id = &quot;allow-hardcoded-for-internal-tools&quot;
 violates = true
 label = &quot;Allow hardcoded credentials in internal-only tooling&quot;
 directive = &quot;credential literals may be hardcoded in scripts or tools that are never deployed externally, on the assumption that only trusted engineers can read the repository&quot;
-why = &quot;Rejected: repository access scope changes over time (new hires, contractors, an accidental visibility flip, a fork), and a credential hardcoded &#x27;for now&#x27; outlives the assumption that justified it. The environment-variable/secrets-manager pattern costs one extra line at call time and removes the assumption entirely.&quot;
-</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator">View on GitHub</a></p></div></div>
-<div class="ov" id="rule-2" role="dialog" aria-label="Retries never double-charge"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A rule with rejected alternatives</p><h3>Retries never double-charge</h3><p class="k">The question</p><p>Do writes that charge a card, send an email or start a job require an idempotency key?</p><p class="k">Sources</p><ul><li>IETF draft: the Idempotency-Key HTTP header</li><li>Stripe: Idempotent Requests</li></ul><p class="k">What it requires</p><p>Every write with an external side effect accepts an idempotency key; a retry with the same key returns the stored result instead of running the operation again.</p><p class="k">Rejected alternative, and why</p><p><b>No idempotency contract, or no server-side deduplication at all.</b> Rejected: networks time out, the client can't tell whether the first request landed and without a key every retry risks a double charge or a duplicate email.</p><p class="k">The fix it recommends</p><p>Require the key on the endpoint, store the response by key and verify by sending the same request twice.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-IDEMPOTENCY-KEYS-1&quot;
-version = 2
+why = &quot;Rejected: repository access scope changes over time (new hires, contractors, an accidental visibility flip, a fork), and a credential hardcoded &#x27;for now&#x27; outlives the assumption that justified it. The environment-variable/secrets-manager pattern costs one extra line at call time and removes the assumption entirely.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/universal/sec-no-hardcoded-secrets-1.toml">View on GitHub</a></p></div></div>
+<div class="ov" id="rule-2" role="dialog" aria-label="Retries never double-charge"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A rule with rejected alternatives</p><h3>Retries never double-charge</h3><p class="k">The question</p><p>When a client retries a write that charges a card, sends an email or starts a job, how does the API keep it from happening twice?</p><p class="k">Sources</p><ul><li>IETF draft: the Idempotency-Key HTTP header</li><li>Stripe: Idempotent Requests</li></ul><p class="k">What it requires</p><p>Every write with an external side effect accepts an idempotency key; a retry with the same key returns the stored result instead of running the operation again.</p><p class="k">Rejected alternative, and why</p><p><b>No idempotency contract, or no server-side deduplication at all.</b> Rejected: networks time out, the client can't tell whether the first request landed and without a key every retry risks a double charge or a duplicate email.</p><p class="k">The fix it recommends</p><p>Require the key on the endpoint, store the response by key and verify by sending the same request twice.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-IDEMPOTENCY-KEYS-1&quot;
+version = 3
 title = &quot;Non-GET writes that trigger external side effects require an idempotency key&quot;
 domain = &quot;api-layer&quot;
 layer = &quot;universal&quot;
@@ -136,21 +132,21 @@ verification = &quot;grounded&quot;
 
 [[sources]]
 url = &quot;https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/&quot;
-title = &quot;IETF — The Idempotency-Key HTTP Header Field (draft-ietf-httpapi-idempotency-key-header)&quot;
+title = &quot;IETF: The Idempotency-Key HTTP Header Field (draft-ietf-httpapi-idempotency-key-header)&quot;
 
 [[sources]]
 url = &quot;https://docs.stripe.com/api/idempotent_requests&quot;
-title = &quot;Stripe — Idempotent Requests&quot;
+title = &quot;Stripe: Idempotent Requests&quot;
 
 [decision]
-question = &quot;What position does the project take on: Non-GET writes that trigger external side effects require an idempotency key?&quot;
+question = &quot;When a client retries a write that charges a card, sends an email or enqueues a job, how does the API keep the side effect from happening twice?&quot;
 default = &quot;non-get-writes-that-trigger-external-side-effects-require-an-idempotency-key&quot;
 why = &quot;Network retries are inevitable. Without idempotency keys, a client cannot safely retry after a timeout because the original may have succeeded silently. With keys, the client retries freely until it gets a definitive response, and the server never double-executes. Allowing retries without keys means the client risks double-charging or sending duplicates on every timeout, because the network cannot tell the client whether the original request reached the server. Deduplicating via natural keys works only when natural keys exist, are stable and uniquely identify the intended effect, and many real operations have no such key (a payment intent, an outbound email, an external job enqueue). Making the client responsible for not retrying pushes correctness onto every consumer; one careless caller produces duplicates and the server has no way to defend against it.&quot;
 
 [[option]]
 id = &quot;non-get-writes-that-trigger-external-side-effects-require-an-idempotency-key&quot;
 label = &quot;Non-GET writes that trigger external side effects require an idempotency key&quot;
-directive = &quot;POST, PUT, PATCH and DELETE endpoints that produce external side effects (charge a card, send an email, enqueue a downstream job, write to a message queue) require an Idempotency-Key header on each request. The server stores the response keyed by that key; a retry with the same key returns the stored response instead of running the operation again. Reads and writes that are naturally idempotent at the storage layer may omit this. The key-retention window is bounded (commonly 24 hours) and documented per endpoint. A violation of THIS rule is a side-effecting write ENDPOINT that has no idempotency-key mechanism in use at all — not the mere presence of an idempotency-key helper/utility function in the codebase, and not a helper that is defined but not (yet) called from any endpoint. An unused helper is a dead-code/hygiene concern for a DIFFERENT rule, never evidence of an idempotency defect under this one; do not report it here.&quot;
+directive = &quot;POST, PUT, PATCH and DELETE endpoints that produce external side effects (charge a card, send an email, enqueue a downstream job, write to a message queue) require an Idempotency-Key header on each request. The server stores the response keyed by that key; a retry with the same key returns the stored response instead of running the operation again. Reads and writes that are naturally idempotent at the storage layer may omit this. The key-retention window is bounded (commonly 24 hours) and documented per endpoint. A violation of THIS rule is a side-effecting write ENDPOINT that has no idempotency-key mechanism in use at all, not the mere presence of an idempotency-key helper/utility function in the codebase and not a helper that is defined but not (yet) called from any endpoint. An unused helper is a dead-code/hygiene concern for a DIFFERENT rule, never evidence of an idempotency defect under this one; do not report it here.&quot;
 remediation = &quot;&quot;&quot;
 Require an Idempotency-Key header on the endpoint and store the response keyed by that value so a retried request with the same key returns the stored response instead of re-running the side effect. Apply this to every POST/PUT/PATCH/DELETE endpoint that charges a card, sends an email, enqueues a job or otherwise triggers an external effect. Verify by sending the same request twice with the same Idempotency-Key and confirming the side effect (charge, email, job) only happens once.
 &quot;&quot;&quot;
@@ -174,10 +170,9 @@ id = &quot;the-api-does-no-server-side-deduplication-at-all&quot;
 violates = true
 label = &quot;No deduplication&quot;
 directive = &quot;the API does no server-side deduplication at all; each consumer is responsible for not retrying after a timeout, and the server treats every request as new&quot;
-why = &quot;Pushing correctness onto every consumer means one careless caller produces duplicates and the server has no way to defend against it.&quot;
-</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator">View on GitHub</a></p></div></div>
+why = &quot;Pushing correctness onto every consumer means one careless caller produces duplicates and the server has no way to defend against it.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/api-layer/arch-idempotency-keys-1.toml">View on GitHub</a></p></div></div>
 <div class="ov" id="rule-3" role="dialog" aria-label="One logger, used everywhere"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A consistency rule</p><h3>One logger, used everywhere</h3><p class="k">The question</p><p>Once a structured logger is in use, does every log call go through it?</p><p class="k">Sources</p><ul><li>OWASP Logging Cheat Sheet</li><li>OWASP Logging Vocabulary Cheat Sheet</li></ul><p class="k">What it requires</p><p>In a repository that has already adopted a structured logger, every operational log line goes through it. It only fires on inconsistency; it never says a repository must adopt one.</p><p class="k">Rejected alternative, and why</p><p><b>Allow mixed logging styles.</b> Rejected: a log search built around the structured format silently misses every line that bypasses it.</p><p class="k">The fix it recommends</p><p>Swap each bare print or console call for the same message through the existing logger, at the same level.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;ARCH-OBSERVABILITY-LOG-CONSISTENCY-1&quot;
-version = 2
+version = 3
 title = &quot;Once a repo has adopted a structured logger, every log call site goes through it; bare print/console-style calls do not sit alongside it&quot;
 domain = &quot;universal&quot;
 layer = &quot;universal&quot;
@@ -188,22 +183,22 @@ inspectable = true
 max_severity = &quot;low&quot;
 default = true
 verification = &quot;grounded&quot;
-qualifies = &quot;This is an INCONSISTENCY check, not a &#x27;you must adopt structured logging&#x27; stance — it only fires once a repo has ALREADY adopted a structured logger (slog/zap/winston/pino/slf4j/serilog/tracing, or an equivalent project-specific wrapper) and some OTHER call site in the same repo still uses a bare print/console-style call alongside it. For Go and Java specifically, the &#x27;always use structured logging&#x27; stance itself is already covered by GO-LOGGING-STRUCTURED-1 and JAVA-LOGGING-STRUCTURED-1 (both full-severity, per-language prose rules) — this rule does not re-litigate that stance for those two languages; it exists for (a) every OTHER stack (Python, JS/TS, Rust, C#, Ruby) where no per-language stance rule already covers the question, and (b) the cross-stack/multi-language case where the inconsistency is between files or layers rather than within a single language&#x27;s own convention. Camerata has no deterministic check for this rule; the model-assisted review finds it, and its findings are capped at severity Low. A bare print/console-style call that is the CLI tool&#x27;s actual stdout product, or that appears in a test or script file where print output IS the point, is out of scope and not flagged.&quot;
+qualifies = &quot;This is an INCONSISTENCY check, not a &#x27;you must adopt structured logging&#x27; stance; it only fires once a repo has ALREADY adopted a structured logger (slog/zap/winston/pino/slf4j/serilog/tracing, or an equivalent project-specific wrapper) and some OTHER call site in the same repo still uses a bare print/console-style call alongside it. For Go and Java specifically, the &#x27;always use structured logging&#x27; stance itself is already covered by GO-LOGGING-STRUCTURED-1 and JAVA-LOGGING-STRUCTURED-1 (both full-severity, per-language prose rules), so this rule does not re-litigate that stance for those two languages; it exists for (a) every OTHER stack (Python, JS/TS, Rust, C#, Ruby) where no per-language stance rule already covers the question, and (b) the cross-stack/multi-language case where the inconsistency is between files or layers rather than within a single language&#x27;s own convention. Camerata has no deterministic check for this rule; the model-assisted review finds it, and its findings are capped at severity Low. A bare print/console-style call that is the CLI tool&#x27;s actual stdout product, or that appears in a test or script file where print output IS the point, is out of scope and not flagged.&quot;
 
 [[sources]]
 url = &quot;https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html&quot;
-title = &quot;OWASP Logging Cheat Sheet — &#x27;Use a standard logging library/format&#x27;: consistent use of one logging approach across an application, rather than ad hoc print statements alongside it&quot;
+title = &quot;OWASP Logging Cheat Sheet, &#x27;Use a standard logging library/format&#x27;: consistent use of one logging approach across an application, rather than ad hoc print statements alongside it&quot;
 
 [[sources]]
 url = &quot;https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html&quot;
-title = &quot;OWASP Logging Vocabulary Cheat Sheet — a shared log event vocabulary/format presupposes every event is emitted through the same logging mechanism&quot;
+title = &quot;OWASP Logging Vocabulary Cheat Sheet: a shared log event vocabulary/format presupposes every event is emitted through the same logging mechanism&quot;
 
 [decision]
 question = &quot;Once a structured logger is already in use somewhere in the repo, does every log-shaped call site go through it, or do bare print/console.log/puts/fmt.Println-style calls still sit alongside it?&quot;
 default = &quot;one-logger-for-the-whole-repo&quot;
 why = &quot;&quot;&quot;
-A structured logger&#x27;s entire value — machine-parseable fields, consistent levels, a single place to
-configure output format/destination/filtering — is undermined the moment some call sites bypass it: a
+A structured logger&#x27;s entire value (machine-parseable fields, consistent levels, a single place to
+configure output format/destination/filtering) is undermined the moment some call sites bypass it: a
 log aggregator built to parse the structured logger&#x27;s JSON output silently drops (or mis-parses) a bare
 `print`/`console.log` line sitting in the same log stream, and a developer searching logs by field
 learns nothing from the call sites that never emitted one. This is specifically an INTERNAL CONSISTENCY
@@ -211,22 +206,14 @@ defect, not a stance about whether structured logging is good (that question bel
 rules, e.g. GO-LOGGING-STRUCTURED-1): a repo that has already paid the cost of adopting slog/zap/pino/
 slf4j and then leaves some fraction of its own call sites on bare print statements gets none of the
 consistency benefit and all of the adoption cost. Scoped deliberately to REPOS THAT HAVE ALREADY
-ADOPTED a structured logger somewhere — a repo with no structured logger anywhere is a different
+ADOPTED a structured logger somewhere; a repo with no structured logger anywhere is a different
 question (the per-language stance rules), not this one.
 &quot;&quot;&quot;
 
 [[option]]
 id = &quot;one-logger-for-the-whole-repo&quot;
 label = &quot;Every log call site in the repo goes through the same adopted structured logger; no bare print/console-style calls alongside it&quot;
-directive = &quot;&quot;&quot;
-In a repository that has already adopted a structured logger (slog/zap/winston/pino/slf4j/serilog/tracing,
-or an equivalent project-specific wrapper) at one or more call sites, every log-shaped call site goes
-through that logger; a bare print/console.log/puts/fmt.Println-style call emitting an operational event, an
-error or a status update does not sit alongside it. Every such message therefore lands in the same
-structured format and the same aggregated stream as the rest of the repo&#x27;s logs, rather than a fraction of
-them bypassing the logger a log aggregator was built to parse. A call site that goes through the adopted
-logger is conforming regardless of its level or format.
-&quot;&quot;&quot;
+directive = &quot;In a repository that has already adopted a structured logger (slog/zap/winston/pino/slf4j/serilog/tracing, or an equivalent project-specific wrapper) at one or more call sites, every log-shaped call site goes through that logger; a bare print/console.log/puts/fmt.Println-style call emitting an operational event, an error or a status update does not sit alongside it. Every such message therefore lands in the same structured format and the same aggregated stream as the rest of the repo&#x27;s logs, rather than a fraction of them bypassing the logger a log aggregator was built to parse. A call site that goes through the adopted logger is conforming regardless of its level or format.&quot;
 remediation = &quot;&quot;&quot;
 Replace the ad hoc print/console-style call with a call through the repo&#x27;s existing structured logger,
 at the same log level and with the same message content, rather than introducing a second logging
@@ -236,15 +223,14 @@ now appears in the same structured format (and, where applicable, the same aggre
 every other log line in the repo.
 &quot;&quot;&quot;
 effort = &quot;low&quot;
-why = &quot;The fix is a like-for-like swap (the same message, the same level, through the already-adopted logger instead of a bare print call), so it carries none of the cost of adopting structured logging in the first place — only the cost of finishing an adoption the repo already started.&quot;
+why = &quot;The fix is a like-for-like swap (the same message, the same level, through the already-adopted logger instead of a bare print call), so it carries none of the cost of adopting structured logging in the first place, only the cost of finishing an adoption the repo already started.&quot;
 
 [[option]]
 id = &quot;allow-mixed-logging-styles&quot;
 violates = true
 label = &quot;Allow bare print/console-style calls to coexist with the repo&#x27;s adopted structured logger&quot;
 directive = &quot;Individual files or call sites may use a bare print/console.log/puts/fmt.Println-style call even in a repo that has otherwise adopted a structured logger elsewhere.&quot;
-why = &quot;Rejected: a log aggregator or a field-based search built around the structured logger&#x27;s output format gets a silently incomplete picture the moment some call sites bypass it — the repo pays the full cost of adopting structured logging and still does not get a complete, uniformly-parseable log stream out of it.&quot;
-</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator">View on GitHub</a></p></div></div>
+why = &quot;Rejected: a log aggregator or a field-based search built around the structured logger&#x27;s output format gets a silently incomplete picture the moment some call sites bypass it: the repo pays the full cost of adopting structured logging and still does not get a complete, uniformly-parseable log stream out of it.&quot;</pre></details><p class="small"><a href="https://github.com/zernst3/camerata-orchestrator/blob/main/crates/rules/principles/universal/arch-observability-log-consistency-1.toml">View on GitHub</a></p></div></div>
 </main>
 
 <footer class="site-foot">
@@ -283,6 +269,6 @@ why = &quot;Rejected: a log aggregator or a field-based search built around the 
   </div>
 </footer>
 
-<script src="site.js"></script>
+<script src="site.js?v=20261121b"></script>
 </body>
 </html>
