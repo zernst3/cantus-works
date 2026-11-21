@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Get your quote | Cantus Works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F7F7F7">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="Tell me about your codebase and get a fixed price and a delivery date within two business days.">
+<meta property="og:title" content="Get your quote">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css?v=20261118b">
+</head>
+<body>
+
+<header class="site" id="hdr">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="index.html"><img src="logo-mark.svg" width="28" height="28" alt="">CANTUS WORKS</a>
+    <div class="nav-right">
+      <nav class="navlinks" aria-label="Sections">
+        <a href="index.html#services">Services</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+      <a class="btn btn-solid btn-sm" href="quote.html">Get your quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<article class="post-article">
+  <div class="wrap article-wrap">
+    <h1 id="q-title">Get your quote</h1>
+    <p class="lede" id="q-lede">Tell me about your codebase. You get a fixed price and a delivery date within two business days. It isn't a sales call.</p>
+
+    <details class="q-prompt">
+      <summary>Build with an AI tool? Let it gather the answers.</summary>
+      <p>Paste this into Cursor, Claude Code, Lovable or whichever tool you build with, then paste its answer into the message box below. It only reads your code and changes nothing.</p>
+      <div class="q-prompt-box"><button type="button" class="btn btn-sm q-copy" data-target="q-prompt-text">Copy prompt</button><pre id="q-prompt-text">I&#x27;m getting a quote for an independent inspection of this codebase. Please gather the facts below by reading the repository. Rules:
+- Read only. Don&#x27;t change, create, delete, commit or install anything.
+- Don&#x27;t include any secret, API key, password, environment value, customer data or code in your answer. Names of files and folders are fine.
+- If you can&#x27;t tell something, write &quot;not sure&quot;. Don&#x27;t guess.
+
+1. Stack: languages, frameworks, database and backend (for example Supabase, Firebase, Postgres), auth provider, payments provider, hosting.
+
+2. Size: count lines of source code written for this project.
+   - Count: files tracked by git (git ls-files) in the languages the app is written in, including tests, SQL migrations and infrastructure files.
+   - Don&#x27;t count: dependency folders (node_modules, vendor and similar), lockfiles, build output (dist, build, .next and similar), generated code, minified files, images and other binaries, and seed or sample data files.
+   - Give the total and a breakdown by language. Say which command you ran, and list anything large you excluded.
+
+3. Services: is this one app, or several separately deployed parts (for example a web app, an API, a background worker)? Are there other repositories that belong to the same product? Name them.
+
+4. Sensitive areas, yes or no for each, with the main folder if yes: sign-in and user accounts, payments or billing, file uploads, admin pages, data shared between customer accounts (multi-tenant), personal or health data, third-party integrations and webhooks.
+
+5. How it was built: which AI tools or contractors appear to have written it, if you can tell from the repository (for example tool config files or commit authors). How many people have committed in the last 90 days?
+
+6. Anything else that would affect an inspection: very large or generated files, more than one app in one repository, code that isn&#x27;t in this repository, or parts you couldn&#x27;t read.
+
+Answer in this exact format, short:
+Stack:
+Lines of source (total, by language):
+How counted and what was excluded:
+Services and related repositories:
+Sensitive areas:
+How it was built:
+People committing in the last 90 days:
+Anything else:</pre></div>
+    </details>
+
+    <form class="q-form" id="q-form" action="https://formspree.io/f/xljbwqqo" method="POST" novalidate>
+      <input type="hidden" name="_subject" id="q-subject" value="Quote request">
+      <input type="text" name="_gotcha" class="q-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="q-row">
+        <label for="q-name">Name</label>
+        <input id="q-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="q-row">
+        <label for="q-email">Email</label>
+        <input id="q-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="q-row">
+        <label for="q-need">What you need</label>
+        <select id="q-need" name="need" required>
+          <option value="" selected disabled>Choose one</option>
+          <option value="Inspection (Find)">An inspection</option>
+          <option value="Fixes (Fix)">Fixes</option>
+          <option value="Ongoing governance (Govern)">Ongoing governance</option>
+          <option value="Not sure">Not sure</option>
+        </select>
+      </div>
+      <div class="q-row">
+        <label for="q-size">Rough size of the codebase</label>
+        <select id="q-size" name="size" required>
+          <option value="" selected disabled>Choose one</option>
+          <option>Under 50,000 lines</option>
+          <option>50,000 to 150,000 lines</option>
+          <option>150,000 to 400,000 lines</option>
+          <option>Over 400,000 lines</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+
+      <p class="q-optional">Optional, but it helps</p>
+      <div class="q-row"><label for="q-company">Company</label><input id="q-company" name="company" type="text" autocomplete="organization"></div>
+      <div class="q-row"><label for="q-stack">Main language or stack</label><input id="q-stack" name="stack" type="text" placeholder="For example Next.js and Supabase"></div>
+      <div class="q-row">
+        <label for="q-who">Who's asking for it</label>
+        <select id="q-who" name="who">
+          <option value="" selected>Choose one</option>
+          <option>An investor</option><option>A customer</option><option>Us</option><option>Someone else</option>
+        </select>
+      </div>
+      <div class="q-row"><label for="q-deadline">Deadline, if any</label><input id="q-deadline" name="deadline" type="text"></div>
+      <div class="q-row"><label for="q-questions">What questions do you most need the report to answer? (up to three)</label><textarea id="q-questions" name="questions" rows="3"></textarea></div>
+      <div class="q-row"><label for="q-heard">How did you hear about Cantus Works?</label><input id="q-heard" name="heard" type="text"></div>
+      <div class="q-row"><label for="q-message">Anything else, or your AI tool's answer</label><textarea id="q-message" name="message" rows="6"></textarea></div>
+
+      <button type="submit" class="btn btn-solid btn-lg" id="q-send">Send</button>
+      <p class="q-small">Your message goes to my inbox through Formspree. See <a href="privacy.html">Privacy</a>.</p>
+      <p class="q-status" id="q-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="q-thanks" id="q-thanks" hidden>
+      <h2>Thanks, it's on its way.</h2>
+      <p>I'll reply from zachary.ernst@cantusworks.com, usually within one business day, with what I need for a fixed price and a date.</p>
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <img class="foot-mark" src="logo-mark.svg" width="36" height="36" alt="">
+      <p class="foot-name">Cantus Works</p>
+      <p>Zachary Ernst</p>
+      <p><a href="mailto:hello@cantusworks.com">hello@cantusworks.com</a></p>
+      <p><a href="https://github.com/zernst3">GitHub</a></p>
+    </div>
+    <nav aria-label="Footer sections">
+      <ul>
+        <li><a href="index.html#how">How it works</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#receive">What you receive</a></li>
+        <li><a href="index.html#who">Who reads your code</a></li>
+        <li><a href="index.html#questions">Questions</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </nav>
+    <div>
+      <ul>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li>&copy; 2026</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-credit">
+    <span class="foot-credit-label">Website by</span>
+    <a class="foot-credit-link" href="https://agenciacontesta.com/" target="_blank" rel="noopener">
+      <span>Contesta</span>
+      <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script src="quote.js"></script>
+</body>
+</html>

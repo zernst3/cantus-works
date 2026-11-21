@@ -41,6 +41,8 @@
     var price = estimate(lines);
     glide(priceEl, price, function (v) { return 'Estimated: ' + money(Math.round(v / 250) * 250); });
     linesEl.textContent = lines.toLocaleString('en-US') + ' lines';
+    var findQuote = document.getElementById('find-quote');
+    if (findQuote) findQuote.href = 'quote.html?need=find&lines=' + lines;
     range.style.setProperty('--fill', (lines / max * 100).toFixed(1) + '%');
     range.setAttribute('aria-valuetext', lines.toLocaleString('en-US') + ' lines, Estimated: ' + money(price));
     var on = lines > 0 ? Math.max(1, Math.ceil(lines / max * BARS)) : 0;
