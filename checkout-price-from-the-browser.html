@@ -45,12 +45,13 @@
     <h1>The checkout bug a pattern scanner won't flag</h1>
     <p class="lede">Your checkout works. Customers pay, the money arrives, nothing crashes. And any signed-in user can still pay whatever price they like.</p>
     <h2>What it looks like</h2>
-    <p>This one is from the sample report, on a small demo app built with Next.js, Supabase and Stripe. The checkout route reads the amount to charge from the request the browser sends:</p>
+    <p>This example is from the sample report, on a small demo app built with Next.js, Supabase and Stripe to test the engine. The checkout route reads the amount to charge from the request the browser sends:</p>
     <pre>const { bookingId, amountCents } = await req.json();</pre>
     <p>Then it creates the Stripe payment for <code>amountCents</code>, and works out the platform's fee from the same number. The booking's real price is in the database, but the route never looks it up. Anyone who opens their browser's developer tools can change the number before it's sent, and the server charges what it's told.</p>
     <p>The route does check that the booking belongs to the person paying. So a user can't pay for someone else's booking, but they can pay one cent for their own, and the platform's fee drops with it.</p>
-    <h2>Why it's so common now</h2>
-    <p>AI tools build features from the front end back. The form already shows the price, so the quickest way to pass it to the payment step is to send it along. It works in every test, because nobody tests with a tampered request.</p>
+    <h2>How it gets there</h2>
+    <p>Trusting a price the browser sends is one of the oldest flaws in online checkout, and it keeps coming back through the code people copy. In 2026 a popular Next.js and Stripe starter template was given a public vulnerability record (<a href="https://nvd.nist.gov/vuln/detail/CVE-2026-4547" target="_blank" rel="noopener">CVE-2026-4547</a>) because its checkout trusted the price sent with the request. Templates and tutorials are exactly what developers and AI tools build from.</p>
+    <p>It also survives testing. The form already shows the price, so passing it along to the payment step is the quickest path, and it works in every test because nobody tests with a tampered request.</p>
     <h2>Why pattern scanners miss it</h2>
     <p>Tools like Semgrep and Dependabot match known patterns and known vulnerable packages, and they're worth running. But there's nothing wrong with the line above as code. The problem is a decision: which number should the server trust? Answering that means knowing the amount is a price, that a price belongs to the server and that the booking query already has it. That's a business-logic flaw, and business-logic flaws need someone to read the code with its purpose in mind.</p>
     <h2>How to fix it</h2>
