@@ -1,5 +1,5 @@
 # Cantus Works
 
-Coming-soon page for Cantus Works: codebase inspection, remediation and governance, built on the Camerata engine.
+The website for Cantus Works (cantusworks.com): codebase inspections, fixes and ongoing governance, built on the Camerata engine.
 
-Single static page, no build step. Served via GitHub Pages.
+Static HTML, CSS and JavaScript, no build step. Served by GitHub Pages from `main`. Design by ConTesta.
