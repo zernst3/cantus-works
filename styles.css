@@ -19,7 +19,7 @@
   /* ink */
   --ink: #0F1826;
   --ink-soft: #47536A;
-  --ink-faint: #6B7690;
+  --ink-faint: #5C677F; /* darkened from #6B7690 to meet WCAG AA 4.5:1 on every site background */
 
   /* accent */
   --accent: #2B5580;
