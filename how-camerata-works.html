@@ -60,6 +60,18 @@
     <h2>Why written rules</h2>
     <p>I learned this on my own projects. An agent kept putting database calls in the service layer, despite the separation I had set up in example endpoints. The examples were not enough. So I wrote a hard rule and had a machine enforce it: database calls live only in the repository layer. It hasn't made that mistake since.</p>
     <p>Examples are not enforcement. Rules are.</p>
+    <h2>Where your code goes</h2>
+    <ul class="check-list">
+      <li><b>Read-only access</b> · I read your repository; I never write to it.</li>
+      <li><b>Anthropic's commercial API</b> · which by its terms does not train on your code. Secrets are masked before any code reaches the model.</li>
+      <li><b>Deleted within 30 days</b> · after the work ends, or sooner if you ask, and I confirm when it's done.</li>
+    </ul>
+    <h2>What an inspection doesn't do</h2>
+    <ul class="check-list">
+      <li><b>It doesn't attack your running app</b> · that's a penetration test, and the two work well together.</li>
+      <li><b>It doesn't certify compliance</b> · SOC 2, HIPAA and PCI are separate processes.</li>
+      <li><b>It reads code, not people</b> · your team's process and roadmap aren't assessed.</li>
+    </ul>
     <h2>What you can check yourself</h2>
     <ul class="check-list">
       <li>Over 400 written rules, nearly all traceable to a published standard.</li>
