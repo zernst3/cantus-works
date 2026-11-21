@@ -37,6 +37,16 @@
     document.getElementById('q-subject').value = label;
   });
 
+  // Cancel: go back to the page the visitor came from on this site, else the home page.
+  var cancel = document.getElementById('q-cancel');
+  if (cancel) cancel.addEventListener('click', function (e) {
+    var ref = document.referrer;
+    if (ref && ref.indexOf(window.location.origin) === 0 && window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  });
+
   // Copy the AI sizing prompt.
   document.querySelectorAll('.q-copy').forEach(function (btn) {
     btn.addEventListener('click', function () {

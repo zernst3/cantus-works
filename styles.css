@@ -1204,3 +1204,22 @@ main > section.blog-list { padding: clamp(24px, 4vw, 40px) 0 clamp(64px, 9vw, 10
 .q-prompt-box { position: relative; margin-top: 10px; }
 .q-prompt-box .q-copy { position: absolute; top: 8px; right: 8px; }
 .q-prompt pre { font-family: var(--mono); font-size: 13px; line-height: 1.5; white-space: pre-wrap; background: var(--bg-deep); border-radius: var(--r-sm); padding: 44px 14px 14px; margin: 0; color: var(--ink); max-height: 360px; overflow: auto; }
+
+/* Quote page: Send and Cancel side by side. */
+.q-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+.q-actions .btn-lg { margin-top: 0; }
+
+/* ---------- Page transitions (cross-document View Transitions) ----------
+   Chrome, Edge and Safari fade between pages; other browsers navigate as before.
+   The header and footer stay put while the page content cross-fades. */
+@view-transition { navigation: auto; }
+header.site { view-transition-name: site-header; }
+footer.site-foot { view-transition-name: site-footer; }
+::view-transition-old(root) { animation: 180ms ease-out both vt-fade-out; }
+::view-transition-new(root) { animation: 260ms ease-out both vt-fade-in; }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root),
+  ::view-transition-group(*) { animation: none !important; }
+}
