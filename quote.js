@@ -74,8 +74,11 @@
     fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
       .then(function (res) {
         if (!res.ok) throw new Error('status ' + res.status);
+        status.textContent = '';
         form.hidden = true;
-        document.getElementById('q-thanks').hidden = false;
+        var thanks = document.getElementById('q-thanks');
+        thanks.hidden = false;
+        thanks.scrollIntoView({ block: 'center', behavior: 'smooth' });
         if (window.umami && typeof window.umami.track === 'function') window.umami.track('quote-sent');
       })
       .catch(function () {

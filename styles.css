@@ -1256,3 +1256,6 @@ main .final p:not(.eyebrow) a:not([class]):hover { background: rgba(255, 255, 25
 
 /* The hero's blue line already marks where the hero ends, so the gray divider under it is dropped. */
 main > section.hero + section { border-top: 0; }
+
+/* The form's own display (grid) must not override the hidden attribute after a successful send. */
+.q-form[hidden], .q-thanks[hidden] { display: none; }
