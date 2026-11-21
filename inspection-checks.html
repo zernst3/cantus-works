@@ -12,6 +12,7 @@
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="styles.css?v=20261118b">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0110ca8d-b614-43de-983e-fb62bd26c7d7" data-domains="cantusworks.com"></script>
 </head>
 <body>
 
@@ -23,7 +24,7 @@
         <a href="index.html#services">Services</a>
         <a href="blog.html" aria-current="page">Blog</a>
       </nav>
-      <a class="btn btn-solid btn-sm" href="quote.html">Get your quote</a>
+      <a class="btn btn-solid btn-sm" href="quote.html" data-umami-event="quote-click" data-umami-event-need="general">Get your quote</a>
     </div>
   </div>
 </header>
@@ -54,7 +55,7 @@
     <h2 id="rules">Three of the rules, exactly as Camerata reads them</h2>
     <p class="rule-links"><a class="btn btn-ghost" href="#rule-1">No hardcoded credentials</a><a class="btn btn-ghost" href="#rule-2">Retries never double-charge</a><a class="btn btn-ghost" href="#rule-3">One logger, used everywhere</a></p>
     <p>Every rule is public. <a href="https://github.com/zernst3/camerata-orchestrator">Read them on GitHub.</a></p>
-    <div class="article-cta"><a class="btn btn-solid btn-lg" href="quote.html">Get your quote</a></div>
+    <div class="article-cta"><a class="btn btn-solid btn-lg" href="quote.html" data-umami-event="quote-click" data-umami-event-need="general">Get your quote</a></div>
   </div>
 </article>
 <div class="ov" id="rule-1" role="dialog" aria-label="No hardcoded credentials"><div class="ov-box"><a class="ov-close btn btn-sm" href="#rules">Close</a><p class="eyebrow">A mechanical check</p><h3>No hardcoded credentials</h3><p class="k">The question</p><p>Where do credentials (API keys, tokens, passwords) live?</p><p class="k">Sources</p><ul><li>CWE-798: Use of Hard-coded Credentials</li><li>OWASP Secrets Management Cheat Sheet</li></ul><p class="k">What it requires</p><p>Credential values never appear in committed source or config; they come from environment variables or a secrets manager.</p><p class="k">Rejected alternative, and why</p><p><b>Allow hardcoded credentials in internal-only tools.</b> Rejected: who can read a repository changes over time, and a credential hardcoded "for now" outlives the assumption.</p><p class="k">The fix it recommends</p><p>Remove the value, load it from the environment or a secrets manager and rotate it, since a committed secret must be treated as disclosed.</p><details><summary>The rule file, exactly as Camerata reads it</summary><pre>id = &quot;SEC-NO-HARDCODED-SECRETS-1&quot;
