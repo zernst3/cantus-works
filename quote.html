@@ -45,7 +45,7 @@
 
     <details class="q-prompt">
       <summary>Build with an AI tool? Let it gather the answers.</summary>
-      <p>Paste this into Cursor, Claude Code, Lovable or whichever tool you build with, then paste its answer into the message box below. It only reads your code and changes nothing.</p>
+      <p>Paste this into Cursor, Claude Code, Lovable or whichever tool you build with, then paste its answer into the message box below. It only reads your code and changes nothing. Its line count is an estimate: your fixed price comes from my own count of the same files the inspection reads.</p>
       <div class="q-prompt-box"><button type="button" class="btn btn-sm q-copy" data-target="q-prompt-text">Copy prompt</button><pre id="q-prompt-text">I&#x27;m getting a quote for an independent inspection of this codebase. Please gather the facts below by reading the repository. Rules:
 - Read only. Don&#x27;t change, create, delete, commit or install anything.
 - Don&#x27;t include any secret, API key, password, environment value, customer data or code in your answer. Names of files and folders are fine.
@@ -53,10 +53,11 @@
 
 1. Stack: languages, frameworks, database and backend (for example Supabase, Firebase, Postgres), auth provider, payments provider, hosting.
 
-2. Size: count lines of source code written for this project.
-   - Count: files tracked by git (git ls-files) in the languages the app is written in, including tests, SQL migrations and infrastructure files.
-   - Don&#x27;t count: dependency folders (node_modules, vendor and similar), lockfiles, build output (dist, build, .next and similar), generated code, minified files, images and other binaries, and seed or sample data files.
-   - Give the total and a breakdown by language. Say which command you ran, and list anything large you excluded.
+2. Size: count the non-blank lines in the files an inspection would read.
+   - Count: files tracked by git (git ls-files) in the languages the app is written in, plus its tests, SQL migrations, config files (YAML, JSON, TOML), CI and infrastructure files.
+   - Don&#x27;t count: dependency folders (node_modules, vendor and similar), lockfiles, build output (dist, build, .next and similar), generated code, minified files, images and other binaries.
+   - Give the total and a breakdown by language. Say which command you ran.
+   - List separately, with their line counts: any file over about 400 KB, and any seed or sample data files. We can agree to leave them out.
 
 3. Services: is this one app, or several separately deployed parts (for example a web app, an API, a background worker)? Are there other repositories that belong to the same product? Name them.
 
