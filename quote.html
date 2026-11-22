@@ -53,11 +53,11 @@
 
 1. Stack: languages, frameworks, database and backend (for example Supabase, Firebase, Postgres), auth provider, payments provider, hosting.
 
-2. Size: count the non-blank lines in the files an inspection would read.
-   - Count: files tracked by git (git ls-files) in the languages the app is written in, plus its tests, SQL migrations, config files (YAML, JSON, TOML), CI and infrastructure files.
+2. Size: every hand-written file is inspected, and every inspected file is counted. Count the non-blank lines in every hand-written file tracked by git (git ls-files).
+   - Count: source code, tests, SQL migrations, config files (YAML, JSON, TOML, .env examples), CI and infrastructure files, HTML and templates, stylesheets, build and deploy scripts (Makefile, Procfile, Dockerfile and similar) and documentation (Markdown).
    - Don&#x27;t count: dependency folders (node_modules, vendor and similar), lockfiles, build output (dist, build, .next and similar), generated code, minified files, images and other binaries.
-   - Give the total and a breakdown by language. Say which command you ran.
-   - List separately, with their line counts: any file over about 400 KB, and any seed or sample data files. We can agree to leave them out.
+   - Give the total and a breakdown by file type. Say which command you ran.
+   - List separately, with their line counts: any file over about 1 MB, and any seed or sample data files. We can agree to leave them out.
 
 3. Services: is this one app, or several separately deployed parts (for example a web app, an API, a background worker)? Are there other repositories that belong to the same product? Name them.
 

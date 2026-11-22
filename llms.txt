@@ -7,7 +7,7 @@ Cantus Works is a one-person practice run by Zachary Ernst in New York. It offer
 Deepest today on Next.js and Supabase. Rules also cover Firebase (including Flutter apps), Python, C#, Go, Java, Ruby and Rust.
 
 Services:
-- Find (codebase inspection): from $3,000, priced by the size of the codebase. Lines are the files the inspection reads: source code, tests and config; generated files, lockfiles, vendored libraries and anything agreed to be left out aren't read or counted. One to two weeks for most codebases, with a walkthrough call.
+- Find (codebase inspection): from $3,000, priced by the size of the codebase. Every hand-written file is inspected and every inspected file is counted: code, tests, config, templates, styles and docs; generated files, lockfiles, vendored libraries and anything agreed to be left out aren't. One to two weeks for most codebases, with a walkthrough call.
 - Fix (remediation): $150 an hour with a ten-hour minimum; problems fixed in priority order as pull requests the client approves. Fixed-price packages for pre-seed teams, from $1,500. Optional: the report is complete on its own.
 - Govern (ongoing governance): from $3,000 a month, three months then month to month, after an inspection. A monthly re-inspection of new and changed code, a monthly call and at least 6 hours a month for design reviews, questions and the client's next hire.
 
