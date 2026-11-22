@@ -1,0 +1,41 @@
+# Cantus Works
+
+> Code inspections for startups: every source file read against written rules, reviewed and signed by one engineer.
+
+Cantus Works is a one-person practice run by Zachary Ernst in New York. It offers security review and technical due diligence in one signed report, for the customer who asks if their data is safe, the investor who asks what they're buying or the first engineer who inherits the code. Every source file is read against the security and architecture rules that apply to the stack, drawn from a library of over 400. Every problem is traced to its file and line, with the suggested fix and an estimate. Zachary Ernst reviews every critical problem and every call the engine isn't sure of, and signs the report.
+
+Deepest today on Next.js and Supabase. Rules also cover Firebase (including Flutter apps), Python, C#, Go, Java, Ruby and Rust.
+
+Services:
+- Find (codebase inspection): from $3,000, priced by the size of the codebase. Lines are the client's own source code; generated files, lockfiles and vendored libraries don't count. One to two weeks for most codebases, with a walkthrough call.
+- Fix (remediation): $150 an hour with a ten-hour minimum; problems fixed in priority order as pull requests the client approves. Fixed-price packages for pre-seed teams, from $1,500. Optional: the report is complete on its own.
+- Govern (ongoing governance): from $3,000 a month, three months then month to month, after an inspection. A monthly re-inspection of new and changed code, a monthly call and at least 6 hours a month for design reviews, questions and the client's next hire.
+
+Access is read-only, with a mutual NDA as standard. Code is read through Anthropic's commercial API, which by its terms does not train on it, and secrets are masked before any code reaches it. The engine behind the work is Camerata, source-available on GitHub; it has been calibrated on test repos but has not yet run on a large client codebase. An inspection is not a compliance certification (SOC 2, HIPAA and PCI are separate processes).
+
+## Pages
+
+- [Home](https://cantusworks.com/): the services, prices, what a client receives and the FAQ
+- [What a Cantus Works inspection checks](https://cantusworks.com/inspection-checks): the areas every inspection covers, and three of the rules exactly as the engine reads them
+- [How Camerata works](https://cantusworks.com/how-camerata-works): the engine behind every inspection, and why one person still signs every report
+- [What's in an inspection report](https://cantusworks.com/whats-in-an-inspection-report): the PDF, the workbook and the files, and what a founder, an investor and a new engineer each do with them
+- [The checkout bug a pattern scanner won't flag](https://cantusworks.com/checkout-price-from-the-browser): a checkout that charges whatever the browser sends, and how to fix it
+- [Get a quote](https://cantusworks.com/quote): a fixed price and a delivery date within two business days
+
+## Sample
+
+- [Sample report (PDF)](https://cantusworks.com/sample/cantus-works-sample.pdf): a real run on a demo codebase built for the purpose; its reviewer decisions are illustrative
+- [All sample files (ZIP)](https://cantusworks.com/sample/cantus-works-sample.zip): the PDF, workbook, JSON, CSV and README
+
+## Contact
+
+- Email: hello@cantusworks.com
+- [Book a 30-minute call](https://calendar.app.google/KakmsUZaSMK9FAoE8)
+- [Cantus Works on LinkedIn](https://www.linkedin.com/company/cantusworks)
+- [Zachary Ernst on LinkedIn](https://www.linkedin.com/in/zernst3/)
+- [GitHub](https://github.com/zernst3)
+
+## Optional
+
+- [Privacy](https://cantusworks.com/privacy)
+- [Terms](https://cantusworks.com/terms)
