@@ -2,7 +2,7 @@
 
 > Code inspections for startups: every source file read against written rules, reviewed and signed by one engineer.
 
-Cantus Works is a one-person practice run by Zachary Ernst in New York. It offers security review and technical due diligence in one signed report, for the customer who asks if their data is safe, the investor who asks what they're buying or the first engineer who inherits the code. Every source file is read against the security and architecture rules that apply to the stack, drawn from a library of over 400. Every problem is traced to its file and line, with the suggested fix and an estimate. Zachary Ernst reviews every critical problem and every call the engine isn't sure of, and signs the report.
+Cantus Works is a one-person practice run by Zachary Ernst in New York. It offers security review and technical due diligence in one signed report. Every source file is read against the security and architecture rules that apply to the stack, drawn from a library of over 400. Every problem is traced to its file and line, with the suggested fix and an estimate. Zachary Ernst reviews every critical problem and every call the engine isn't sure of, and signs the report.
 
 Deepest today on Next.js and Supabase. Rules also cover Firebase (including Flutter apps), Python, C#, Go, Java, Ruby and Rust.
 
