@@ -33,7 +33,7 @@
   // Keep the subject in step if the visitor changes "What you need".
   var needSel = document.getElementById('q-need');
   needSel.addEventListener('change', function () {
-    var label = needSel.value === 'Not sure' ? 'Quote request' : 'Quote request: ' + needSel.options[needSel.selectedIndex].text.toLowerCase();
+    var label = (needSel.value === 'Not sure' || needSel.value === 'Other') ? 'Quote request' : 'Quote request: ' + needSel.options[needSel.selectedIndex].text.toLowerCase();
     document.getElementById('q-subject').value = label;
   });
 
