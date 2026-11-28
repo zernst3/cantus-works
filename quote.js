@@ -6,11 +6,11 @@
   var lines = Number(params.get('lines'));
 
   var CONTEXT = {
-    find: { title: 'Get your quote', option: 'Inspection (Find)', subject: 'Quote request: inspection' },
-    fix: { title: 'Ask about fixes', option: 'Fixes (Fix)', subject: 'Inquiry: fixes',
+    find: { title: 'Get your quote', option: 'Codebase Inspection', subject: 'Quote request: Codebase Inspection' },
+    fix: { title: 'Ask about Remediation', option: 'Remediation', subject: 'Inquiry: Remediation',
            lede: 'Tell me what needs fixing and how big the codebase is. If you already have a Cantus Works report, say so and I will work from it.' },
-    govern: { title: 'Ask about ongoing governance', option: 'Ongoing governance (Govern)', subject: 'Inquiry: ongoing governance',
-              lede: 'Tell me about your team and your codebase. Ongoing governance starts after a first inspection, so mention it if you already have one.' }
+    govern: { title: 'Ask about Ongoing Governance', option: 'Ongoing Governance', subject: 'Inquiry: Ongoing Governance',
+              lede: 'Tell me about your team and your codebase. Ongoing Governance starts after a first inspection, so mention it if you already have one.' }
   };
 
   var ctx = CONTEXT[need];
