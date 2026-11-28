@@ -46,7 +46,7 @@
     <p class="lede">Camerata is the engine I built for this work. The engine supplies the structure: it lists every source file, makes sure each one is read and keeps the record. AI models supply narrow judgment, each answering one question, using the smallest model that answers it well. Every call that matters comes to me.</p>
     <h2>One engine, narrow AI jobs, then a person</h2>
     <ul class="check-list">
-      <li><b>Automated checks</b> · for what a rule can decide exactly: leaked keys, unsafe database access, settings that leave a door open and every block of code that was copied.</li>
+      <li><b>Automated checks</b> · for what a rule can decide exactly: leaked keys, unsafe database access, settings that leave a door open and blocks of code that were copied.</li>
       <li><b>Narrow AI jobs</b> · the main model reads every source file against the rules for your stack, then checks its own work rule by rule. Smaller, faster models each answer one closed question. Is this copy the same decision? What is the fix? Is this the same problem written twice?</li>
       <li><b>One person</b> · who reviews every critical problem and every call the engine isn't sure of before you see them.</li>
     </ul>
@@ -63,7 +63,7 @@
     <h2>Where your code goes</h2>
     <ul class="check-list">
       <li><b>Read-only access</b> · I read your repository; I never write to it.</li>
-      <li><b>Anthropic's commercial API</b> · which by its terms does not train on your code. Secrets are masked before any code reaches the model.</li>
+      <li><b>Anthropic's commercial API</b> · which by its terms does not train on your code. Known secret formats are masked before any code reaches the model.</li>
       <li><b>Deleted within 30 days</b> · my copy of your code, after the work ends. I keep the delivered report for a year to answer questions and run retests, then delete it. Either one goes sooner if you ask, or everything at once, and I confirm when it's done.</li>
     </ul>
     <h2>What an inspection doesn't do</h2>
